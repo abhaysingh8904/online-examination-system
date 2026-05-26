@@ -1,0 +1,4761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExamPro — Online Examination System</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --bg-soft: #eef2ff;
+      --surface: rgba(255, 255, 255, 0.88);
+      --surface-strong: #ffffff;
+      --panel: rgba(255, 255, 255, 0.86);
+      --panel2: rgba(248, 250, 252, 0.92);
+      --border: rgba(15, 23, 42, 0.10);
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #4f46e5;
+      --primary2: #7c3aed;
+      --primary-soft: rgba(79, 70, 229, 0.10);
+      --success: #16a34a;
+      --success-soft: rgba(22, 163, 74, 0.10);
+      --danger: #dc2626;
+      --danger-soft: rgba(220, 38, 38, 0.10);
+      --warning: #d97706;
+      --warning-soft: rgba(217, 119, 6, 0.12);
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.10);
+      --shadow-soft: 0 12px 34px rgba(15, 23, 42, 0.07);
+      --radius: 22px;
+      --radius-lg: 30px;
+      --sidebar: #0f172a;
+      --sidebar-2: #111827;
+      --sidebar-text: #e5e7eb;
+      --sidebar-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.16), transparent 32rem),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 28rem),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 48%, #f8fafc 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent 78%);
+      z-index: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--text);
+      letter-spacing: -0.035em;
+    }
+
+    .title-serif {
+      font-family: "Playfair Display", serif;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 15px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--text);
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 16px;
+      outline: none;
+      font-size: 15px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      background: #ffffff;
+      border-color: rgba(79, 70, 229, 0.72);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-weight: 850;
+      font-size: 14px;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      font-family: inherit;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #ffffff;
+      box-shadow: 0 16px 32px rgba(79, 70, 229, 0.22);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 20px 42px rgba(79, 70, 229, 0.30);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #334155;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: rgba(79, 70, 229, 0.22);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      box-shadow: 0 14px 28px rgba(220, 38, 38, 0.18);
+    }
+
+    .link {
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 850;
+      text-decoration: none;
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: var(--success-soft);
+      border: 1px solid rgba(22, 163, 74, 0.24);
+      color: #15803d;
+    }
+
+    .message.error {
+      background: var(--danger-soft);
+      border: 1px solid rgba(220, 38, 38, 0.22);
+      color: #b91c1c;
+    }
+
+    .message.info {
+      background: var(--primary-soft);
+      border: 1px solid rgba(79, 70, 229, 0.20);
+      color: #4338ca;
+    }
+
+    /* AUTH */
+    .auth-wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 26px;
+    }
+
+    .auth-card {
+      width: min(430px, 100%);
+      padding: 34px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(24px);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .brand-logo,
+    .reg-brand-logo,
+    .sidebar-logo {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      font-weight: 950;
+      box-shadow: 0 14px 34px rgba(79, 70, 229, 0.24);
+    }
+
+    .brand-logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 16px;
+      border-radius: 24px;
+      font-size: 34px;
+    }
+
+    .switch-text,
+    .auth-bottom-note {
+      text-align: center;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* REGISTER */
+    .register-shell {
+      width: min(1160px, 100%);
+    }
+
+    .register-back {
+      width: fit-content;
+      margin-bottom: 14px;
+      color: #475569;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 800;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .register-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .register-left,
+    .register-right {
+      min-height: 720px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(24px);
+    }
+
+    .register-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(79,70,229,0.14), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.88));
+    }
+
+    .reg-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .reg-brand-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      font-size: 34px;
+      flex-shrink: 0;
+    }
+
+    .reg-brand-text h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 28px;
+      line-height: 1.05;
+    }
+
+    .reg-brand-text p {
+      color: #64748b;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .left-hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(42px, 4.1vw, 58px);
+      line-height: 0.98;
+      margin-bottom: 18px;
+    }
+
+    .left-hero p {
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1.75;
+      margin-bottom: 34px;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(15,23,42,0.08);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .feature-item h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .feature-item p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #64748b;
+    }
+
+    .f1 { background: rgba(79, 70, 229, 0.12); }
+    .f2 { background: rgba(22, 163, 74, 0.12); }
+    .f3 { background: rgba(217, 119, 6, 0.12); }
+
+    .trusted-box {
+      border-top: 1px solid rgba(15, 23, 42, 0.09);
+      padding-top: 26px;
+      margin-top: 26px;
+    }
+
+    .trusted-title {
+      color: #64748b;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 900;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trust-chip,
+    .subject-chip {
+      padding: 9px 15px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      color: #475569;
+      font-size: 13px;
+      font-weight: 750;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+    }
+
+    .reg-head h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 42px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .reg-head p {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .joining-label {
+      color: #334155;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .role-option {
+      padding: 22px 18px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      color: var(--text);
+      text-align: center;
+      min-height: 138px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .role-option.active,
+    .gender-option.active,
+    .subject-chip.active {
+      background: linear-gradient(180deg, rgba(79, 70, 229, 0.11), rgba(124, 58, 237, 0.08));
+      border-color: rgba(79, 70, 229, 0.46);
+      color: #312e81;
+      box-shadow: 0 16px 34px rgba(79, 70, 229, 0.12);
+    }
+
+    .role-icon {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .role-title {
+      font-size: 17px;
+      font-weight: 950;
+      margin-bottom: 4px;
+    }
+
+    .role-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    .stepper-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+    }
+
+    .step-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      font-size: 14px;
+      color: #64748b;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .step-circle.active {
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      border-color: transparent;
+    }
+
+    .step-circle.done {
+      background: var(--success);
+      color: white;
+      border-color: transparent;
+    }
+
+    .step-line {
+      width: 52px;
+      height: 2px;
+      background: rgba(15, 23, 42, 0.12);
+    }
+
+    .step-line.done {
+      background: var(--success);
+    }
+
+    .step-text {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .reg-step {
+      display: none;
+      animation: fadeStep 0.22s ease;
+    }
+
+    .reg-step.active {
+      display: block;
+    }
+
+    @keyframes fadeStep {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .field-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .gender-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .gender-option {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      cursor: pointer;
+      color: #475569;
+      font-weight: 800;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .phone-row {
+      display: grid;
+      grid-template-columns: 116px 1fr;
+      gap: 12px;
+    }
+
+    .password-rule-box {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid rgba(15, 23, 42, 0.09);
+    }
+
+    .password-rule-box h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .password-rule-box ul {
+      padding-left: 18px;
+      color: #64748b;
+      line-height: 1.9;
+      font-size: 14px;
+    }
+
+    .terms-row,
+    .accept-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 18px;
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .terms-row input,
+    .accept-row input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .subjects-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .subject-chip {
+      cursor: pointer;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .action-row button {
+      min-height: 56px;
+      font-size: 16px;
+    }
+
+    /* APP LAYOUT */
+    .app-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(99,102,241,0.20), transparent 34%),
+        linear-gradient(180deg, var(--sidebar), var(--sidebar-2));
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 18px 0 50px rgba(15, 23, 42, 0.10);
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+
+    .sidebar-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      font-size: 22px;
+    }
+
+    .sidebar-brand h2 {
+      margin: 0;
+      font-size: 22px;
+      color: #ffffff;
+    }
+
+    .sidebar-brand p {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--sidebar-muted);
+    }
+
+    .sidebar-menu {
+      display: grid;
+      gap: 10px;
+    }
+
+    .sidebar-link {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 14px;
+      border-radius: 17px;
+      background: transparent;
+      color: #cbd5e1;
+      border: 1px solid transparent;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .sidebar-link:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.10);
+      transform: none;
+    }
+
+    .sidebar-link.active {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: white;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+    }
+
+    .sidebar-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .sidebar-user {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .sidebar-user-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), #06b6d4);
+      font-weight: 950;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .sidebar-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sidebar-user h4 {
+      font-size: 14px;
+      margin-bottom: 3px;
+      color: white;
+    }
+
+    .sidebar-user p {
+      font-size: 12px;
+      color: var(--sidebar-muted);
+    }
+
+    .sidebar-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .main-area {
+      min-width: 0;
+    }
+
+    .main-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      min-height: 76px;
+      padding: 14px 28px;
+      background: rgba(248, 250, 252, 0.78);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .main-topbar h1 {
+      font-size: 24px;
+    }
+
+    .main-content {
+      width: min(1120px, 94%);
+      margin: auto;
+      padding: 28px 0 60px;
+    }
+
+    .clean-card,
+    .clean-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(20px);
+    }
+
+    .clean-card {
+      padding: 24px;
+    }
+
+    .clean-stat {
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .clean-stat::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 96px;
+      height: 96px;
+      border-radius: 999px;
+      background: rgba(79,70,229,0.10);
+    }
+
+    .clean-stat-number {
+      font-size: 32px;
+      font-weight: 950;
+      margin-bottom: 8px;
+      color: var(--primary);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .clean-stat-label {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .question-box,
+    .exam-question-full {
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.10);
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.06);
+    }
+
+    .question-box h3,
+    .exam-question-full h3 {
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+      padding: 14px;
+      border: 1px solid rgba(15,23,42,0.10);
+      border-radius: 17px;
+      cursor: pointer;
+      background: #f8fafc;
+      color: #334155;
+      transition: 0.2s;
+      font-weight: 700;
+    }
+
+    .option:hover {
+      border-color: rgba(79,70,229,0.42);
+      background: rgba(79,70,229,0.06);
+    }
+
+    .option input {
+      width: auto;
+      accent-color: var(--primary);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.05);
+    }
+
+    th, td {
+      border-bottom: 1px solid rgba(15,23,42,0.08);
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: #334155;
+      background: #f8fafc;
+      font-weight: 900;
+    }
+
+    td {
+      color: #334155;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .leaderboard-rank {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+      background: rgba(79,70,229,0.10);
+      color: var(--primary);
+    }
+
+    .leaderboard-rank.top {
+      background: linear-gradient(135deg, #f59e0b, #facc15);
+      color: #111827;
+    }
+
+
+    .upcoming-exam-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .upcoming-exam-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 22px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .exam-date-badge {
+      width: 72px;
+      min-height: 72px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(124,58,237,0.10));
+      border: 1px solid rgba(79,70,229,0.18);
+      color: var(--primary);
+      font-weight: 950;
+    }
+
+    .exam-date-badge span {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .exam-date-badge strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .upcoming-exam-info h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .exam-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .exam-meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid rgba(15,23,42,0.08);
+      color: #475569;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .exam-status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1px solid rgba(22, 163, 74, 0.18);
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+
+
+    .admin-mini-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 950;
+      border: 1px solid rgba(15,23,42,0.10);
+      background: #f8fafc;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-chip.running { background: var(--success-soft); color: var(--success); border-color: rgba(22,163,74,0.22); }
+    .status-chip.upcoming { background: var(--primary-soft); color: var(--primary); border-color: rgba(79,70,229,0.20); }
+    .status-chip.closed { background: var(--danger-soft); color: var(--danger); border-color: rgba(220,38,38,0.18); }
+    .status-chip.blocked { background: var(--danger-soft); color: var(--danger); border-color: rgba(220,38,38,0.18); }
+
+    .draft-question-card {
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.10);
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 12px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.05);
+    }
+
+    .test-action-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 18px;
+      border-radius: 22px;
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.10);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.05);
+      margin-bottom: 14px;
+    }
+
+
+    .company-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 30px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(79,70,229,0.18), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,0.92), rgba(248,250,252,0.86));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .company-hero::after {
+      content: "BT";
+      position: absolute;
+      right: 24px;
+      top: 18px;
+      font-size: 96px;
+      font-weight: 950;
+      color: rgba(79,70,229,0.08);
+      letter-spacing: -0.08em;
+      pointer-events: none;
+    }
+
+    .company-logo-large {
+      width: 78px;
+      height: 78px;
+      border-radius: 26px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-size: 30px;
+      font-weight: 950;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 20px 42px rgba(79,70,229,0.22);
+      margin-bottom: 18px;
+    }
+
+    .company-hero h2 {
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 0.95;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .company-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .company-info-card {
+      padding: 20px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px solid rgba(15,23,42,0.10);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.05);
+    }
+
+    .company-info-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .company-value-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .company-value-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 15px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid rgba(15,23,42,0.08);
+      color: #334155;
+      font-weight: 750;
+      line-height: 1.6;
+    }
+
+    .company-value-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: rgba(79,70,229,0.10);
+    }
+
+
+
+    .founder-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(280px, 0.95fr) minmax(320px, 1.05fr);
+      gap: 56px;
+      align-items: center;
+      padding: 42px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(248,250,252,0.88));
+      border: 1px solid rgba(15,23,42,0.08);
+      box-shadow: 0 22px 58px rgba(15,23,42,0.08);
+      margin-top: 22px;
+      overflow: hidden;
+    }
+
+    .founder-card::before {
+      content: "";
+      position: absolute;
+      width: 330px;
+      height: 330px;
+      right: -120px;
+      top: -140px;
+      border-radius: 999px;
+      background: rgba(79,70,229,0.08);
+      pointer-events: none;
+    }
+
+    .founder-photo {
+      width: min(100%, 360px);
+      height: 360px;
+      border-radius: 34px;
+      padding: 0;
+      background: linear-gradient(135deg, #8ee7ff, #5c9df8);
+      box-shadow: 0 26px 70px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+      justify-self: center;
+    }
+
+    .founder-photo-inner {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.34), transparent 26%),
+        linear-gradient(135deg, #8ee7ff, #5c9df8);
+      color: #ffffff;
+      font-size: 84px;
+      font-weight: 950;
+      text-shadow: 0 8px 24px rgba(15,23,42,0.22);
+    }
+
+    .founder-photo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+
+    .founder-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .founder-eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+    }
+
+    .founder-content h2 {
+      font-size: clamp(42px, 5vw, 70px);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      margin-bottom: 24px;
+    }
+
+    .founder-content .muted {
+      max-width: 620px;
+      font-size: 18px;
+      line-height: 1.9;
+      color: #475569;
+    }
+
+    .founder-main-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 24px;
+      padding: 16px 24px;
+      border-radius: 18px;
+      background: #0f172a;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 950;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.18);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .founder-main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 46px rgba(15, 23, 42, 0.24);
+    }
+
+    .founder-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .founder-chip,
+    .product-link-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(15,23,42,0.08);
+      color: #334155;
+      font-size: 14px;
+      font-weight: 850;
+      text-decoration: none;
+      box-shadow: 0 10px 26px rgba(15,23,42,0.06);
+    }
+
+    .founder-portfolio-link:hover {
+      background: rgba(79,70,229,0.10);
+      border-color: rgba(79,70,229,0.22);
+      color: var(--primary);
+    }
+
+
+    .product-links-grid {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 4px 18px;
+      margin-top: 14px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .product-links-grid::-webkit-scrollbar {
+      height: 9px;
+    }
+
+    .product-links-grid::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.06);
+      border-radius: 999px;
+    }
+
+    .product-links-grid::-webkit-scrollbar-thumb {
+      background: rgba(79, 70, 229, 0.35);
+      border-radius: 999px;
+    }
+
+    .product-link-card {
+      flex: 0 0 250px;
+      min-width: 250px;
+      min-height: 252px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 20px;
+      border-radius: 24px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+      color: var(--text);
+      text-decoration: none;
+      scroll-snap-align: start;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .product-link-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(79, 70, 229, 0.28);
+      box-shadow: 0 20px 46px rgba(15, 23, 42, 0.11);
+    }
+
+    .product-link-icon {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(124,58,237,0.10));
+      border: 1px solid rgba(79,70,229,0.16);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .product-link-card h3 {
+      font-size: 18px;
+      line-height: 1.25;
+      margin: 0;
+      text-decoration: none;
+    }
+
+    .product-link-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.65;
+      text-decoration: none;
+    }
+
+    .product-link-card .product-link-chip {
+      margin-top: auto;
+      align-self: flex-start;
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+
+    .product-title-icon {
+      display: none;
+    }
+
+
+    /* PROFILE */
+    .profile-trigger {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2), #06b6d4);
+      box-shadow: 0 14px 28px rgba(79, 70, 229, 0.22);
+      cursor: pointer;
+      border: none;
+    }
+
+    .profile-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--primary);
+      font-weight: 950;
+      font-size: 17px;
+    }
+
+    .profile-avatar img,
+    .big-profile-avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      margin-left: 7px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(79,70,229,0.10);
+      border: 1px solid rgba(79,70,229,0.18);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: 0.6px;
+    }
+
+    .profile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.42);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s;
+    }
+
+    .profile-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .profile-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(430px, 92vw);
+      height: 100vh;
+      z-index: 101;
+      padding: 24px;
+      background: rgba(255,255,255,0.96);
+      border-left: 1px solid rgba(15, 23, 42, 0.10);
+      box-shadow: -30px 0 90px rgba(15, 23, 42, 0.18);
+      transform: translateX(105%);
+      transition: 0.32s;
+      overflow-y: auto;
+      backdrop-filter: blur(24px);
+    }
+
+    .profile-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .close-drawer {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      padding: 0;
+      background: #f1f5f9;
+      color: #0f172a;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+    }
+
+    .profile-preview {
+      text-align: center;
+      padding: 22px;
+      border-radius: 24px;
+      background: #f8fafc;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      margin-bottom: 22px;
+    }
+
+    .big-profile-avatar {
+      width: 112px;
+      height: 112px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2), #06b6d4);
+      box-shadow: 0 18px 36px rgba(79, 70, 229, 0.18);
+    }
+
+    .big-profile-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-size: 34px;
+      font-weight: 950;
+      color: var(--primary);
+    }
+
+    .upload-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(79, 70, 229, 0.10);
+      border: 1px solid rgba(79, 70, 229, 0.18);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .drawer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .profile-save-msg {
+      margin-top: 14px;
+      color: #15803d;
+      font-size: 13px;
+      font-weight: 800;
+      display: none;
+    }
+
+    .profile-save-msg.show {
+      display: block;
+    }
+
+    /* INSTRUCTION MODAL */
+    .instruction-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+    }
+
+    .instruction-overlay.open {
+      display: flex;
+    }
+
+    .instruction-modal {
+      width: min(720px, 100%);
+      border-radius: 30px;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 35px 120px rgba(15, 23, 42, 0.24);
+      padding: 30px;
+      backdrop-filter: blur(24px);
+    }
+
+    .instruction-list {
+      margin: 22px 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .instruction-item {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .instruction-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* EXAM WINDOW */
+    .exam-window {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background:
+        radial-gradient(circle at top left, rgba(79,70,229,0.14), transparent 28rem),
+        linear-gradient(180deg, #f8fafc, #eef2ff);
+      display: none;
+      overflow-y: auto;
+    }
+
+    .exam-window.open {
+      display: block;
+    }
+
+    .exam-window-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      min-height: 74px;
+      padding: 14px 28px;
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(22px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .exam-window-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .exam-timer-box {
+      padding: 12px 18px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.10);
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 950;
+      min-width: 115px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .exam-timer-box.warning {
+      border-color: rgba(217, 119, 6, 0.32);
+      color: #d97706;
+    }
+
+    .exam-timer-box.danger {
+      border-color: rgba(220, 38, 38, 0.34);
+      color: #dc2626;
+      animation: timerPulse 1s infinite;
+    }
+
+    @keyframes timerPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
+
+    .exam-window-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .exam-window-body {
+      width: min(1000px, 94%);
+      margin: 26px auto 60px;
+    }
+
+    .exam-security-card {
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      border-radius: 20px;
+      background: rgba(79, 70, 229, 0.10);
+      border: 1px solid rgba(79, 70, 229, 0.18);
+      color: #4338ca;
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: 750;
+    }
+
+    .exam-security-card.danger {
+      border-color: rgba(220, 38, 38, 0.25);
+      color: #b91c1c;
+      background: rgba(220, 38, 38, 0.08);
+    }
+
+    .exam-progress-line {
+      margin-top: 8px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.10);
+      overflow: hidden;
+    }
+
+    .exam-progress-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, var(--primary));
+      transition: width 1s linear;
+    }
+
+    @media (max-width: 1100px) {
+
+      .founder-card {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .founder-photo {
+        width: min(100%, 520px);
+        height: 400px;
+      }
+      .product-link-card {
+        flex-basis: 230px;
+        min-width: 230px;
+      }
+
+      .register-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .register-left,
+      .register-right {
+        min-height: auto;
+      }
+
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+      }
+
+      .sidebar-menu {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .product-link-card {
+        flex-basis: 82vw;
+        min-width: 82vw;
+      }
+
+      .auth-wrapper {
+        padding: 16px;
+      }
+
+      .auth-card,
+      .register-left,
+      .register-right,
+      .clean-card,
+      .instruction-modal {
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      .field-grid-2,
+      .company-info-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .gender-grid,
+      .drawer-actions,
+      .action-row,
+      .instruction-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .role-grid,
+      .phone-row,
+      .sidebar-menu {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-drawer {
+        width: 100vw;
+      }
+
+      .main-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .main-content {
+        width: min(100% - 24px, 1120px);
+        padding-top: 18px;
+      }
+
+      .exam-window-topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-window-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .upcoming-exam-item,
+      .test-action-card {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-date-badge {
+        width: 100%;
+        min-height: 58px;
+      }
+
+      .founder-card {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        justify-items: center;
+        text-align: center;
+        padding: 26px;
+      }
+
+      .founder-photo {
+        width: min(100%, 420px);
+        height: 340px;
+      }
+
+      .founder-photo-inner img {
+        object-position: center 42%;
+      }
+
+      .founder-content .muted {
+        font-size: 16px;
+      }
+
+      .founder-meta {
+        justify-content: center;
+      }
+    }
+
+
+    /* TOP NAV ACTIONS */
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .topbar-nav-btn,
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 11px 15px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #0f172a;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+      backdrop-filter: blur(18px);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .topbar-nav-btn:hover,
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+    }
+
+    .topbar-nav-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 16px 34px rgba(79,70,229,0.22);
+    }
+
+    .theme-toggle-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #070a14;
+      --bg-soft: #0f172a;
+      --surface: rgba(17, 24, 39, 0.78);
+      --surface-strong: #111827;
+      --panel: rgba(17, 24, 39, 0.82);
+      --panel2: rgba(15, 23, 42, 0.86);
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #8b5cf6;
+      --primary2: #06b6d4;
+      --primary-soft: rgba(139, 92, 246, 0.16);
+      --success: #22c55e;
+      --success-soft: rgba(34, 197, 94, 0.14);
+      --danger: #f43f5e;
+      --danger-soft: rgba(244, 63, 94, 0.14);
+      --warning: #f59e0b;
+      --warning-soft: rgba(245, 158, 11, 0.14);
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.44);
+      --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.28);
+      --sidebar: #050816;
+      --sidebar-2: #0b1020;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #94a3b8;
+    }
+
+    html[data-theme="dark"] body {
+      background:
+        radial-gradient(circle at 14% 10%, rgba(139, 92, 246, 0.24), transparent 28rem),
+        radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.15), transparent 26rem),
+        radial-gradient(circle at 50% 100%, rgba(79, 70, 229, 0.12), transparent 30rem),
+        linear-gradient(180deg, #070a14 0%, #0b1020 52%, #050816 100%);
+    }
+
+    html[data-theme="dark"] body::before {
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+      opacity: 0.8;
+    }
+
+    html[data-theme="dark"] label,
+    html[data-theme="dark"] .joining-label,
+    html[data-theme="dark"] th,
+    html[data-theme="dark"] td,
+    html[data-theme="dark"] .option,
+    html[data-theme="dark"] .instruction-item {
+      color: #dbeafe;
+    }
+
+    html[data-theme="dark"] input,
+    html[data-theme="dark"] select,
+    html[data-theme="dark"] textarea {
+      background: rgba(15, 23, 42, 0.82);
+      color: #f8fafc;
+      border-color: rgba(148, 163, 184, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    html[data-theme="dark"] input::placeholder,
+    html[data-theme="dark"] textarea::placeholder {
+      color: #64748b;
+    }
+
+    html[data-theme="dark"] input:focus,
+    html[data-theme="dark"] select:focus,
+    html[data-theme="dark"] textarea:focus {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: rgba(139, 92, 246, 0.78);
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.16);
+    }
+
+    html[data-theme="dark"] .btn-secondary {
+      background: rgba(15, 23, 42, 0.74);
+      color: #e2e8f0;
+      border-color: rgba(148, 163, 184, 0.18);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.22);
+    }
+
+    html[data-theme="dark"] .btn-secondary:hover {
+      background: rgba(30, 41, 59, 0.84);
+      border-color: rgba(139, 92, 246, 0.30);
+    }
+
+    html[data-theme="dark"] .auth-card,
+    html[data-theme="dark"] .register-left,
+    html[data-theme="dark"] .register-right,
+    html[data-theme="dark"] .clean-card,
+    html[data-theme="dark"] .clean-stat,
+    html[data-theme="dark"] .instruction-modal,
+    html[data-theme="dark"] .profile-drawer {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.82), rgba(2, 6, 23, 0.88));
+      border-color: rgba(148, 163, 184, 0.16);
+      box-shadow: var(--shadow-soft);
+    }
+
+    html[data-theme="dark"] .register-left {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(139, 92, 246, 0.24), transparent 36%),
+        linear-gradient(180deg, rgba(17,24,39,0.86), rgba(2,6,23,0.88));
+    }
+
+    html[data-theme="dark"] .register-back,
+    html[data-theme="dark"] .test-action-card,
+    html[data-theme="dark"] .draft-question-card,
+    html[data-theme="dark"] .upcoming-exam-item,
+    html[data-theme="dark"] .exam-meta-chip,
+    html[data-theme="dark"] .exam-date-badge,
+    html[data-theme="dark"] .role-option,
+    html[data-theme="dark"] .gender-option,
+    html[data-theme="dark"] .trust-chip,
+    html[data-theme="dark"] .subject-chip,
+    html[data-theme="dark"] .feature-item,
+    html[data-theme="dark"] .password-rule-box,
+    html[data-theme="dark"] .question-box,
+    html[data-theme="dark"] .exam-question-full,
+    html[data-theme="dark"] table,
+    html[data-theme="dark"] .profile-preview,
+    html[data-theme="dark"] .instruction-item,
+    html[data-theme="dark"] .exam-timer-box {
+      background: rgba(15, 23, 42, 0.72);
+      border-color: rgba(148, 163, 184, 0.16);
+      color: #e2e8f0;
+      box-shadow: 0 16px 42px rgba(0,0,0,0.20);
+    }
+
+    html[data-theme="dark"] .role-option.active,
+    html[data-theme="dark"] .gender-option.active,
+    html[data-theme="dark"] .subject-chip.active {
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.22), rgba(6, 182, 212, 0.10));
+      border-color: rgba(139, 92, 246, 0.50);
+      color: #ffffff;
+    }
+
+    html[data-theme="dark"] .role-desc,
+    html[data-theme="dark"] .feature-item p,
+    html[data-theme="dark"] .left-hero p,
+    html[data-theme="dark"] .reg-head p,
+    html[data-theme="dark"] .step-text,
+    html[data-theme="dark"] .clean-stat-label,
+    html[data-theme="dark"] .small,
+    html[data-theme="dark"] .terms-row,
+    html[data-theme="dark"] .accept-row,
+    html[data-theme="dark"] .password-rule-box ul {
+      color: #94a3b8;
+    }
+
+    html[data-theme="dark"] .main-topbar,
+    html[data-theme="dark"] .exam-window-topbar {
+      background: rgba(5, 8, 22, 0.76);
+      border-bottom-color: rgba(148, 163, 184, 0.14);
+    }
+
+    html[data-theme="dark"] .option {
+      background: rgba(15, 23, 42, 0.76);
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+
+    html[data-theme="dark"] .option:hover {
+      background: rgba(139, 92, 246, 0.14);
+      border-color: rgba(139, 92, 246, 0.44);
+    }
+
+    html[data-theme="dark"] th {
+      background: rgba(15, 23, 42, 0.92);
+    }
+
+    html[data-theme="dark"] td,
+    html[data-theme="dark"] th {
+      border-bottom-color: rgba(148, 163, 184, 0.12);
+    }
+
+    html[data-theme="dark"] .profile-avatar,
+    html[data-theme="dark"] .big-profile-avatar-inner,
+    html[data-theme="dark"] .close-drawer {
+      background: #0f172a;
+      color: #e0e7ff;
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+
+    html[data-theme="dark"] .profile-overlay,
+    html[data-theme="dark"] .instruction-overlay {
+      background: rgba(0, 0, 0, 0.62);
+    }
+
+    html[data-theme="dark"] .exam-window {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(139,92,246,0.22), transparent 28rem),
+        radial-gradient(circle at 90% 0%, rgba(6,182,212,0.13), transparent 26rem),
+        linear-gradient(180deg, #070a14, #050816);
+    }
+
+    html[data-theme="dark"] .topbar-nav-btn,
+    html[data-theme="dark"] .theme-toggle {
+      background: rgba(15, 23, 42, 0.78);
+      color: #f8fafc;
+      border-color: rgba(148, 163, 184, 0.20);
+      box-shadow: 0 18px 42px rgba(0,0,0,0.26);
+    }
+
+
+
+    html[data-theme="dark"] .founder-card,
+    html[data-theme="dark"] .product-link-card,
+    html[data-theme="dark"] .founder-chip,
+    html[data-theme="dark"] .product-link-chip {
+      background: rgba(15, 23, 42, 0.72);
+      border-color: rgba(148, 163, 184, 0.16);
+      color: #e2e8f0;
+      box-shadow: 0 16px 42px rgba(0,0,0,0.20);
+    }
+
+    html[data-theme="dark"] .founder-photo-inner {
+      background: #0f172a;
+      color: #e0e7ff;
+    }
+
+    html[data-theme="dark"] .founder-card {
+      background: linear-gradient(135deg, rgba(17,24,39,0.86), rgba(2,6,23,0.90));
+    }
+
+    html[data-theme="dark"] .founder-content .muted {
+      color: #cbd5e1;
+    }
+
+    html[data-theme="dark"] .founder-main-btn {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+
+    html[data-theme="dark"] .topbar-nav-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <section class="auth-wrapper" id="authSection">
+    <div class="auth-card" id="loginCard">
+      <div class="brand">
+        <div class="brand-logo">E</div>
+        <h1 class="title-serif">ExamPro</h1>
+        <p class="muted">Online Examination System</p>
+      </div>
+
+      <h2>Sign in</h2>
+      <p class="muted">Login with your registered username and password.</p>
+
+      <label>Username</label>
+      <input type="text" id="loginUsername" placeholder="Enter username" />
+
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter password" />
+
+      <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="loginUser()">Login</button>
+
+      <div id="loginMsg" class="message"></div>
+
+      <p class="switch-text">
+        New user?
+        <span class="link" onclick="showRegister()">Create account</span>
+      </p>
+    </div>
+
+    <div class="register-shell hidden" id="registerCard">
+      <div class="register-back" onclick="showLogin()">← Back to Sign In</div>
+
+      <div class="register-layout">
+        <div class="register-left">
+          <div>
+            <div class="reg-brand-row">
+              <div class="reg-brand-logo">E</div>
+              <div class="reg-brand-text">
+                <h3>ExamPro</h3>
+                <p>Academic Suite</p>
+              </div>
+            </div>
+
+            <div class="left-hero">
+              <h1>Start your academic journey today</h1>
+              <p>
+                Join students and educators using ExamPro to manage exams,
+                track performance, and improve learning outcomes.
+              </p>
+            </div>
+
+            <div class="feature-list">
+              <div class="feature-item">
+                <div class="feature-icon f1">📋</div>
+                <div>
+                  <h4>Smart Exam Management</h4>
+                  <p>Take exams, view results, and track your progress.</p>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon f2">🏆</div>
+                <div>
+                  <h4>Leaderboard</h4>
+                  <p>See where students rank based on scores.</p>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon f3">🛡️</div>
+                <div>
+                  <h4>Exam Mode</h4>
+                  <p>Fullscreen test mode with tab-switch warnings.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="trusted-box">
+            <div class="trusted-title">Trusted By</div>
+            <div class="trust-row">
+              <span class="trust-chip">IIT Delhi</span>
+              <span class="trust-chip">BITS Pilani</span>
+              <span class="trust-chip">NIT Trichy</span>
+              <span class="trust-chip">+240 more</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="register-right">
+          <div class="reg-head">
+            <h2>Create your account</h2>
+            <p>Fill in the details below to get started.</p>
+          </div>
+
+          <div class="joining-label">I am joining as</div>
+
+          <div class="role-grid">
+            <button type="button" class="role-option active" id="roleStudentCard" onclick="setRegisterRole('ROLE_STUDENT')">
+              <span class="role-icon">🎓</span>
+              <div class="role-title">Student</div>
+              <div class="role-desc">Take exams & track results</div>
+            </button>
+
+            <button type="button" class="role-option" id="roleAdminCard" onclick="setRegisterRole('ROLE_ADMIN')">
+              <span class="role-icon">⚙️</span>
+              <div class="role-title">Admin / Faculty</div>
+              <div class="role-desc">Manage exams & users</div>
+            </button>
+          </div>
+
+          <div class="stepper-row">
+            <div class="stepper">
+              <div class="step-circle active" id="circle1">1</div>
+              <div class="step-line" id="line1"></div>
+              <div class="step-circle" id="circle2">2</div>
+              <div class="step-line" id="line2"></div>
+              <div class="step-circle" id="circle3">3</div>
+            </div>
+            <div class="step-text" id="stepHeadingText">Step 1 of 3 — Personal Info</div>
+          </div>
+
+          <div class="reg-step active" id="regStep1">
+            <div class="field-grid-2">
+              <div>
+                <label>First Name *</label>
+                <input type="text" id="regFirstName" placeholder="Arjun" />
+              </div>
+
+              <div>
+                <label>Last Name *</label>
+                <input type="text" id="regLastName" placeholder="Kumar" />
+              </div>
+            </div>
+
+            <label>Date of Birth *</label>
+            <input type="date" id="regDob" />
+
+            <label>Gender</label>
+            <div class="gender-grid">
+              <div class="gender-option" id="genderMale" onclick="setGender('Male')">⚪ Male</div>
+              <div class="gender-option" id="genderFemale" onclick="setGender('Female')">⚪ Female</div>
+              <div class="gender-option" id="genderOther" onclick="setGender('Other')">⚪ Other</div>
+            </div>
+
+            <label>Phone Number</label>
+            <div class="phone-row">
+              <select id="regCountryCode">
+                <option value="+91">IN +91</option>
+                <option value="+1">US +1</option>
+                <option value="+44">UK +44</option>
+              </select>
+              <input type="text" id="regPhone" placeholder="98765 43210" />
+            </div>
+          </div>
+
+          <div class="reg-step" id="regStep2">
+            <label>Institution / University *</label>
+            <input type="text" id="regCollege" placeholder="e.g. IIT Delhi" />
+
+            <div class="field-grid-2">
+              <div>
+                <label>Department / Branch *</label>
+                <input type="text" id="regBranch" placeholder="e.g. Computer Science" />
+              </div>
+
+              <div id="studentYearField">
+                <label>Year / Semester *</label>
+                <select id="regYear">
+                  <option value="">Select year</option>
+                  <option>1st Year</option>
+                  <option>2nd Year</option>
+                  <option>3rd Year</option>
+                  <option>4th Year</option>
+                  <option>Semester 1</option>
+                  <option>Semester 2</option>
+                  <option>Semester 3</option>
+                  <option>Semester 4</option>
+                  <option>Semester 5</option>
+                  <option>Semester 6</option>
+                  <option>Semester 7</option>
+                  <option>Semester 8</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Student / Employee ID *</label>
+            <input type="text" id="regRoll" placeholder="e.g. 2024CS001" />
+
+            <div id="studentSubjectsField">
+              <label>Subjects of Interest</label>
+              <div class="subjects-wrap" id="subjectsWrap">
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Mathematics</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Physics</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Chemistry</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">English</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">History</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Computer Science</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Biology</span>
+                <span class="subject-chip" onclick="toggleRegisterSubject(this)">Economics</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="reg-step" id="regStep3">
+            <label>Email Address *</label>
+            <input type="email" id="regEmail" placeholder="you@university.edu" />
+
+            <label>Username *</label>
+            <input type="text" id="regUsername" placeholder="arjun_kumar" />
+
+            <label>Password *</label>
+            <input type="password" id="regPassword" placeholder="Min. 8 characters" />
+
+            <label>Confirm Password *</label>
+            <input type="password" id="regConfirmPassword" placeholder="Re-enter your password" />
+
+            <div class="password-rule-box">
+              <h4>Password must include:</h4>
+              <ul>
+                <li>At least 8 characters</li>
+                <li>One uppercase letter</li>
+                <li>One number</li>
+                <li>One special character</li>
+              </ul>
+            </div>
+
+            <label class="terms-row">
+              <input type="checkbox" id="regTerms" />
+              <span>I agree to the <span class="link">Terms of Service</span> and <span class="link">Privacy Policy</span>.</span>
+            </label>
+          </div>
+
+          <div id="registerMsg" class="message"></div>
+
+          <div class="action-row">
+            <button type="button" class="btn-secondary" id="regBackBtn" onclick="goPrevRegisterStep()" style="visibility:hidden;">← Back</button>
+            <button type="button" class="btn-primary" id="regNextBtn" onclick="goNextRegisterStep()">Continue →</button>
+          </div>
+
+          <div class="auth-bottom-note">
+            Already have an account? <span class="link" onclick="showLogin()">Sign in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appSection" class="hidden">
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div>
+          <div class="sidebar-brand">
+            <div class="sidebar-logo">E</div>
+            <div>
+              <h2 class="title-serif">ExamPro</h2>
+              <p>Academic Suite</p>
+            </div>
+          </div>
+
+          <div class="sidebar-menu">
+            <button class="sidebar-link active" id="dashboardTab" onclick="showPage('dashboardPage', this, 'Dashboard')">
+              <span class="sidebar-icon">🏠</span>
+              <span>Dashboard</span>
+            </button>
+
+            <button class="sidebar-link hidden" id="adminTab" onclick="showPage('adminPage', this, 'Add Exam'); renderAdminExamList(); renderStudentSelectOptions();">
+              <span class="sidebar-icon">🧾</span>
+              <span>Add Exam</span>
+            </button>
+
+            <button class="sidebar-link hidden" id="studentsAdminTab" onclick="showPage('studentManagementPage', this, 'Students'); renderAdminStudents();">
+              <span class="sidebar-icon">👥</span>
+              <span>Students</span>
+            </button>
+
+            <button class="sidebar-link hidden" id="studentTab" onclick="showPage('studentPage', this, 'Take Test')">
+              <span class="sidebar-icon">🎯</span>
+              <span>Take Test</span>
+            </button>
+
+            <button class="sidebar-link" id="resultTab" onclick="showPage('resultPage', this, 'Results')">
+              <span class="sidebar-icon">📊</span>
+              <span>Results</span>
+            </button>
+
+            <button class="sidebar-link" id="leaderboardTab" onclick="showPage('leaderboardPage', this, 'Leaderboard'); renderLeaderboard();">
+              <span class="sidebar-icon">🏆</span>
+              <span>Leaderboard</span>
+            </button>
+
+          </div>
+        </div>
+
+        <div class="sidebar-user">
+          <div class="sidebar-user-top">
+            <div class="sidebar-avatar" id="sidebarProfileAvatar">U</div>
+            <div>
+              <h4 id="sidebarUserName">User</h4>
+              <p id="sidebarUserRole">Student</p>
+            </div>
+          </div>
+
+          <div class="sidebar-actions">
+            <button class="btn-secondary" onclick="openProfileDrawer()">My Profile</button>
+            <button class="btn-danger" onclick="logoutUser()">Logout</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <div class="main-topbar">
+          <div>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p class="muted">
+              Logged in as <b id="currentUserText"></b>
+              <span class="role-badge" id="currentRoleText"></span>
+            </p>
+          </div>
+
+          <div class="topbar-actions">
+            <button class="topbar-nav-btn" id="companyTab" type="button" onclick="showPage('companyPage', this, 'ℹ️ About')" title="About">
+              <span>ℹ️</span>
+              <span>About</span>
+            </button>
+
+            <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle dark and light mode">
+              <span class="theme-toggle-icon" id="themeToggleIcon">🌙</span>
+              <span id="themeToggleText">Dark Mode</span>
+            </button>
+
+            <button class="profile-trigger" onclick="openProfileDrawer()" title="Open profile">
+              <div class="profile-avatar" id="topProfileAvatar">U</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div id="dashboardPage" class="page">
+            <div class="grid grid-4">
+              <div class="clean-stat">
+                <div class="clean-stat-number" id="dashRole">-</div>
+                <div class="clean-stat-label">Current Role</div>
+              </div>
+
+              <div class="clean-stat">
+                <div class="clean-stat-number" id="dashQuestionCount">0</div>
+                <div class="clean-stat-label">Questions Loaded</div>
+              </div>
+
+              <div class="clean-stat">
+                <div class="clean-stat-number" id="dashLastScore">-</div>
+                <div class="clean-stat-label">Last Score</div>
+              </div>
+
+              <div class="clean-stat">
+                <div class="clean-stat-number" id="dashUpcomingCount">0</div>
+                <div class="clean-stat-label">Upcoming Exams</div>
+              </div>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <div class="section-head">
+                <div>
+                  <h2>Upcoming Exams</h2>
+                  <p class="muted">Scheduled exams will appear here so students can prepare before the test.</p>
+                </div>
+
+                <button class="btn-secondary" onclick="renderUpcomingExams()">Refresh Exams</button>
+              </div>
+
+              <div id="upcomingExamBox"></div>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <h2>Welcome to ExamPro</h2>
+              <p class="muted">
+                Use the sidebar to take tests, view results, manage questions, and check leaderboard.
+              </p>
+            </div>
+          </div>
+
+          <div id="adminPage" class="page hidden">
+            <div class="clean-card">
+              <div class="section-head">
+                <div>
+                  <h2>Add Exam</h2>
+                  <p class="muted">Create a complete exam with subject, schedule, assigned students, and questions.</p>
+                </div>
+                <button class="btn-secondary" onclick="clearExamForm()">Clear Form</button>
+              </div>
+
+              <div class="grid grid-2">
+                <div>
+                  <label>Exam Title *</label>
+                  <input id="examTitle" placeholder="Example: Java Unit Test" />
+                </div>
+
+                <div>
+                  <label>Subject *</label>
+                  <input id="examSubject" placeholder="Example: Java / DBMS / Web Technology" />
+                </div>
+
+                <div>
+                  <label>Exam Date *</label>
+                  <input type="date" id="examDate" />
+                </div>
+
+                <div>
+                  <label>Start Time *</label>
+                  <input type="time" id="examTime" />
+                </div>
+
+                <div>
+                  <label>Duration *</label>
+                  <select id="examDuration">
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">60 minutes</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Total Marks</label>
+                  <input id="examMarks" placeholder="Example: 20" />
+                </div>
+              </div>
+
+              <label>Assign Test To *</label>
+              <select id="examAssignType" onchange="toggleSpecificStudentBox()">
+                <option value="all">All Students</option>
+                <option value="specific">Specific Student</option>
+              </select>
+
+              <div id="specificStudentBox" class="hidden">
+                <label>Select Student</label>
+                <select id="examSpecificStudent">
+                  <option value="">Select student</option>
+                </select>
+              </div>
+
+              <div class="clean-card" style="margin-top:20px;background:var(--panel2);">
+                <div class="section-head">
+                  <div>
+                    <h3>Add Questions For This Subject</h3>
+                    <p class="muted">Questions are attached to this exam and its subject, not added directly as loose questions.</p>
+                  </div>
+                  <button class="btn-secondary" onclick="addQuestionToExamDraft()">+ Add Question</button>
+                </div>
+
+                <label>Question</label>
+                <textarea id="qText" placeholder="Enter subject question"></textarea>
+
+                <div class="grid grid-2">
+                  <div>
+                    <label>Option A</label>
+                    <input id="optionA" placeholder="Option A" />
+                  </div>
+
+                  <div>
+                    <label>Option B</label>
+                    <input id="optionB" placeholder="Option B" />
+                  </div>
+
+                  <div>
+                    <label>Option C</label>
+                    <input id="optionC" placeholder="Option C" />
+                  </div>
+
+                  <div>
+                    <label>Option D</label>
+                    <input id="optionD" placeholder="Option D" />
+                  </div>
+                </div>
+
+                <label>Correct Answer</label>
+                <select id="correctOption">
+                  <option value="A">Option A</option>
+                  <option value="B">Option B</option>
+                  <option value="C">Option C</option>
+                  <option value="D">Option D</option>
+                </select>
+
+                <div id="draftQuestionBox" style="margin-top:18px;"></div>
+              </div>
+
+              <button class="btn-primary" style="margin-top:20px;width:100%;" onclick="saveExam()">Save Exam</button>
+              <div id="adminMsg" class="message"></div>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <div class="section-head">
+                <div>
+                  <h2>Created Exams</h2>
+                  <p class="muted">Manage scheduled, running, and upcoming exams with subject and assigned students.</p>
+                </div>
+                <button class="btn-secondary" onclick="renderAdminExamList()">Refresh Exams</button>
+              </div>
+
+              <div id="adminExamList"></div>
+            </div>
+          </div>
+
+          <div id="studentManagementPage" class="page hidden">
+            <div class="clean-card">
+              <div class="section-head">
+                <div>
+                  <h2>All Students</h2>
+                  <p class="muted">Admin can view registered students and block/unblock platform access.</p>
+                </div>
+                <button class="btn-secondary" onclick="renderAdminStudents()">Refresh Students</button>
+              </div>
+
+              <div id="adminStudentsBox"></div>
+            </div>
+          </div>
+
+          <div id="studentPage" class="page hidden">
+            <div class="clean-card">
+              <div class="section-head">
+                <div>
+                  <h2>Take Test</h2>
+                  <p class="muted">All running and upcoming tests assigned to you are shown here with subject.</p>
+                </div>
+
+                <button class="btn-secondary" onclick="renderStudentTests()">Refresh Tests</button>
+              </div>
+
+              <div id="testMsg" class="message"></div>
+              <div id="studentTestList"></div>
+            </div>
+          </div>
+
+          <div id="resultPage" class="page hidden">
+            <div class="clean-card">
+              <div class="section-head">
+                <div>
+                  <h2>Results</h2>
+                  <p class="muted">Check your submitted test performance.</p>
+                </div>
+
+                <button class="btn-secondary" onclick="loadResults()">Refresh Result</button>
+              </div>
+
+              <div id="resultMsg" class="message"></div>
+              <div id="resultBox"></div>
+            </div>
+          </div>
+
+          <div id="leaderboardPage" class="page hidden">
+            <div class="clean-card">
+              <div class="section-head">
+                <div>
+                  <h2>Leaderboard</h2>
+                  <p class="muted">See student rankings based on test score.</p>
+                </div>
+
+                <button class="btn-secondary" onclick="renderLeaderboard()">Refresh Leaderboard</button>
+              </div>
+
+              <div id="leaderboardBox"></div>
+            </div>
+          </div>
+
+          <div id="companyPage" class="page hidden">
+            <div class="company-hero">
+              <div class="company-logo-large">BT</div>
+              <h2 class="title-serif">Bhadoriya Tech</h2>
+              <p class="muted" style="max-width:720px;">
+                Bhadoriya Tech is the company identity behind this ExamPro platform. It focuses on building clean,
+                secure, and easy-to-use academic technology solutions for online exams, student management,
+                performance tracking, and digital learning workflows.
+              </p>
+            </div>
+
+            <div class="company-info-grid">
+              <div class="company-info-card">
+                <h3>Company Name</h3>
+                <p class="muted">Bhadoriya Tech</p>
+              </div>
+
+              <div class="company-info-card">
+                <h3>Platform</h3>
+                <p class="muted">ExamPro — Online Examination System</p>
+              </div>
+
+              <div class="company-info-card">
+                <h3>Focus Area</h3>
+                <p class="muted">Education technology, exam automation, and student performance analytics.</p>
+              </div>
+            </div>
+
+            <div class="founder-card">
+              <div class="founder-photo">
+                <div class="founder-photo-inner">
+                   
+                       <img src="Gemini_Generated_Image_tiunohtiunohtiun.png" alt="Abhay Bhadoriya founder photo"> 
+                  
+                </div>
+              </div>
+
+              <div class="founder-content">
+                <span class="founder-eyebrow">ABOUT FOUNDER</span>
+                <h2>Meet The Founder</h2>
+                <p class="muted">
+                  I’m Abhay Bhadoriya, founder of Bhadoriya Tech and creator of ExamPro. I’m focused on building clean,
+                  useful, and scalable digital products for students, faculty, and academic institutions.
+                </p>
+
+                <a class="founder-main-btn" href="https://myporfoliogit.vercel.app/" target="_blank" rel="noopener">🌐 Know More About Me</a>
+
+                <div class="founder-meta">
+                  <span class="founder-chip">🎓 B.Tech IT</span>
+                  <span class="founder-chip">📅 2026</span>
+                  <span class="founder-chip">📍 India</span>
+                  <span class="founder-chip">💼 Fresher</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <div class="section-head">
+                <div>
+                  <h2>Other Product Links</h2>
+                  <p class="muted">Explore more products and useful project links from Bhadoriya Tech.</p>
+                </div>
+              </div>
+
+              <div class="product-links-grid">
+                <a class="product-link-card" href="#" target="_blank" rel="noopener">
+                  <div class="product-link-icon">🧪</div>
+                  <h3><span class="product-title-icon">🧪</span> ExamPro</h3>
+                  <p class="muted">Online examination, results, leaderboard, and student management platform.</p>
+                  <span class="product-link-chip">🔗 Open Link →</span>
+                </a>
+                
+                <a class="product-link-card" href="https://project-management-production-1e7b.up.railway.app" target="_blank" rel="noopener">
+                  <div class="product-link-icon">🗂️</div>
+                  <h3><span class="product-title-icon">🗂️</span> Project OS</h3>
+                  <p class="muted">A modern project management system for organizing tasks, projects, and team workflows.</p>
+                  <span class="product-link-chip">🔗 Open Link →</span>
+                </a>
+
+                <a class="product-link-card" href="https://github.com/abhaysingh8904/ai_documents.git" target="_blank" rel="noopener">
+                  <div class="product-link-icon">🤖</div>
+                  <h3><span class="product-title-icon">🤖</span> AI Document Tool</h3>
+                  <p class="muted">A smart document assistant for upload, analysis, and quick answers.</p>
+                  <span class="product-link-chip">🔗 Open Link →</span>
+                </a>
+
+                <a class="product-link-card" href="https://github.com/abhaysingh8904/Analythics-Dashbord.git" target="_blank" rel="noopener">
+                  <div class="product-link-icon">📊</div>
+                  <h3><span class="product-title-icon">📊</span> Analytics Dashboard</h3>
+                  <p class="muted">Clean dashboards for tracking performance, data, and business insights.</p>
+                  <span class="product-link-chip">🔗 Open Link →</span>
+                </a>
+
+                
+
+                <a class="product-link-card" href="https://insiders-ofgt.vercel.app" target="_blank" rel="noopener">
+                  <div class="product-link-icon">🎡</div>
+                  <h3><span class="product-title-icon">🎡</span> Spin Quest</h3>
+                  <p class="muted">An engaging spin-based quiz and reward project with a clean interactive experience.</p>
+                  <span class="product-link-chip">🔗 Open Link →</span>
+                </a>
+              </div>
+
+              <p class="small" style="margin-top:14px;">
+                Note: Replace each <b>href="#"</b> and the founder portfolio link with your real deployed URL when available.
+              </p>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <div class="section-head">
+                <div>
+                  <h2>What Bhadoriya Tech Provides</h2>
+                  <p class="muted">A simple overview of the company and platform features.</p>
+                </div>
+              </div>
+
+              <div class="company-value-list">
+                <div class="company-value-item">
+                  <div class="company-value-icon">🧾</div>
+                  <div>
+                    <b>Exam Management</b><br>
+                    Faculty/admin can create exams by subject, schedule future tests, add questions, and assign exams to all or selected students.
+                  </div>
+                </div>
+
+                <div class="company-value-item">
+                  <div class="company-value-icon">👥</div>
+                  <div>
+                    <b>Student Management</b><br>
+                    Admin can view registered students and block or unblock students from accessing the platform.
+                  </div>
+                </div>
+
+                <div class="company-value-item">
+                  <div class="company-value-icon">🎯</div>
+                  <div>
+                    <b>Secure Test Experience</b><br>
+                    Students can see running and upcoming tests, start available exams, and submit answers in a focused exam window.
+                  </div>
+                </div>
+
+                <div class="company-value-item">
+                  <div class="company-value-icon">📊</div>
+                  <div>
+                    <b>Results & Leaderboard</b><br>
+                    The platform tracks test scores, subject-wise performance, and leaderboard rankings for students.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clean-card" style="margin-top:18px;">
+              <h2>Contact / Brand Details</h2>
+              <div class="table-wrap">
+                <table>
+                  <tr>
+                    <th>Detail</th>
+                    <th>Information</th>
+                  </tr>
+                  <tr>
+                    <td>Company</td>
+                    <td>Bhadoriya Tech</td>
+                  </tr>
+                  <tr>
+                    <td>Founder</td>
+                    <td>Abhay Bhadoriya</td>
+                  </tr>
+                  <tr>
+                    <td>Product</td>
+                    <td>ExamPro</td>
+                  </tr>
+                  <tr>
+                    <td>Category</td>
+                    <td>Online Examination & Academic Management System</td>
+                  </tr>
+                  <tr>
+                    <td>Purpose</td>
+                    <td>To make exam creation, test taking, result tracking, and student management simple and professional.</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <div class="profile-overlay" id="profileOverlay" onclick="closeProfileDrawer()"></div>
+
+  <aside class="profile-drawer" id="profileDrawer">
+    <div class="drawer-top">
+      <div>
+        <h2>My Profile</h2>
+        <p class="muted">View and update your academic details.</p>
+      </div>
+      <button class="close-drawer" onclick="closeProfileDrawer()">✕</button>
+    </div>
+
+    <div class="profile-preview">
+      <div class="big-profile-avatar">
+        <div class="big-profile-avatar-inner" id="drawerProfileAvatar">U</div>
+      </div>
+      <h3 id="profileDisplayName">User</h3>
+      <p class="muted"><span id="profileDisplayRole">Student</span></p>
+
+      <label class="upload-btn">
+        Upload Profile Photo
+        <input type="file" id="profilePhotoInput" accept="image/*" hidden onchange="previewProfilePhoto(event)">
+      </label>
+    </div>
+
+    <label>Full Name</label>
+    <input id="profileFullName" placeholder="Enter full name">
+
+    <label>College Name</label>
+    <input id="profileCollege" placeholder="Enter college name">
+
+    <label>Branch Name</label>
+    <input id="profileBranch" placeholder="Example: Computer Science">
+
+    <label>Roll Number</label>
+    <input id="profileRoll" placeholder="Enter roll number">
+
+    <label>Email</label>
+    <input id="profileEmail" placeholder="Enter email">
+
+    <label>Phone Number</label>
+    <input id="profilePhone" placeholder="Enter phone number">
+
+    <div class="drawer-actions">
+      <button class="btn-primary" onclick="saveProfileDetails()">Save Details</button>
+      <button class="btn-danger" onclick="logoutUser()">Logout</button>
+    </div>
+
+    <div class="profile-save-msg" id="profileSaveMsg">Profile updated successfully.</div>
+  </aside>
+
+  <section class="instruction-overlay" id="instructionOverlay">
+    <div class="instruction-modal">
+      <h2>Exam Instructions</h2>
+      <p class="muted">Read all instructions carefully before starting the test.</p>
+
+      <div class="instruction-list">
+        <div class="instruction-item">⏱️ The test duration is <b>15 minutes</b>.</div>
+        <div class="instruction-item">🖥️ The test will open in fullscreen exam mode.</div>
+        <div class="instruction-item">🚫 Do not switch tabs, minimize browser, open another window, or exit fullscreen.</div>
+        <div class="instruction-item">⚠️ After <b>3 window switches / focus losses / fullscreen exits</b>, your test will be submitted automatically.</div>
+        <div class="instruction-item">✅ You can submit the test anytime using the Submit Test button.</div>
+        <div class="instruction-item">❌ Quit Test will close exam mode without submitting your answers.</div>
+      </div>
+
+      <label class="accept-row">
+        <input type="checkbox" id="acceptInstructions" onchange="toggleStartTestButton()">
+        <span>I have read and accept all exam instructions.</span>
+      </label>
+
+      <div class="instruction-actions">
+        <button class="btn-secondary" onclick="closeInstructionPopup()">Cancel</button>
+        <button class="btn-primary" id="startTestBtn" onclick="startTestAfterInstructions()" disabled>Start Test</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="exam-window" id="examWindow">
+    <div class="exam-window-topbar">
+      <div class="exam-window-title">
+        <h2>Online Test</h2>
+        <p>Exam mode active. Do not refresh, switch tabs, or exit fullscreen.</p>
+      </div>
+
+      <div>
+        <div class="exam-timer-box" id="examTimerBox">15:00</div>
+        <div class="exam-progress-line">
+          <div class="exam-progress-fill" id="examProgressFill"></div>
+        </div>
+      </div>
+
+      <div class="exam-window-actions">
+        <button class="btn-danger" onclick="quitExamWindow()">Quit Test</button>
+        <button class="btn-primary" onclick="submitExamWindow()">Submit Test</button>
+      </div>
+    </div>
+
+    <div class="exam-window-body">
+      <div class="exam-security-card" id="examSecurityWarning">
+        Test started. You have 15 minutes. Warning count: 0/3.
+      </div>
+
+      <form id="examWindowForm">
+        <div id="examWindowQuestions"></div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const API_BASE_URL = "";
+
+    let token = localStorage.getItem("exam_token") || "";
+    let currentUsername = localStorage.getItem("exam_username") || "";
+    let currentRole = localStorage.getItem("exam_role") || "";
+    let loadedQuestions = [];
+    let currentExamForTest = null;
+    let examQuestionDraft = [];
+    let platformExams = JSON.parse(localStorage.getItem("exam_platform_exams") || "[]");
+    let upcomingExams = JSON.parse(localStorage.getItem("exam_upcoming_exams") || "[]");
+
+    let registerStep = 1;
+    let selectedRegisterRole = "ROLE_STUDENT";
+    let selectedGender = "";
+    let selectedSubjects = [];
+
+    let examDurationSeconds = 15 * 60;
+    let examRemainingSeconds = examDurationSeconds;
+    let examTimerInterval = null;
+    let examStarted = false;
+    let examViolationCount = 0;
+    let examSubmitting = false;
+    let lastViolationTime = 0;
+
+    function showMessage(id, text, type = "info") {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = "message show " + type;
+    }
+
+    function clearMessage(id) {
+      const el = document.getElementById(id);
+      el.textContent = "";
+      el.className = "message";
+    }
+
+    function showRegister() {
+      document.getElementById("loginCard").classList.add("hidden");
+      document.getElementById("registerCard").classList.remove("hidden");
+      clearMessage("loginMsg");
+      clearMessage("registerMsg");
+      registerStep = 1;
+      updateRegisterStepUI();
+    }
+
+    function showLogin() {
+      document.getElementById("registerCard").classList.add("hidden");
+      document.getElementById("loginCard").classList.remove("hidden");
+      clearMessage("registerMsg");
+    }
+
+    function authHeaders() {
+      return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      };
+    }
+
+    function decodeJwtRole(jwt) {
+      try {
+        const payload = jwt.split(".")[1];
+        const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+        return decoded.role || "";
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function setRegisterRole(role) {
+      selectedRegisterRole = role;
+      document.getElementById("roleStudentCard").classList.toggle("active", role === "ROLE_STUDENT");
+      document.getElementById("roleAdminCard").classList.toggle("active", role === "ROLE_ADMIN");
+      updateRoleSpecificFields();
+    }
+
+    function updateRoleSpecificFields() {
+      const isStudent = selectedRegisterRole === "ROLE_STUDENT";
+      const yearField = document.getElementById("studentYearField");
+      const subjectsField = document.getElementById("studentSubjectsField");
+      const rollInput = document.getElementById("regRoll");
+
+      if (yearField) yearField.classList.toggle("hidden", !isStudent);
+      if (subjectsField) subjectsField.classList.toggle("hidden", !isStudent);
+
+      if (rollInput) {
+        rollInput.placeholder = isStudent ? "e.g. 2024CS001" : "e.g. FACULTY001";
+      }
+
+      if (!isStudent) {
+        document.getElementById("regYear").value = "";
+        selectedSubjects = [];
+        document.querySelectorAll(".subject-chip").forEach(chip => chip.classList.remove("active"));
+      }
+    }
+
+    function setGender(gender) {
+      selectedGender = gender;
+      document.getElementById("genderMale").classList.toggle("active", gender === "Male");
+      document.getElementById("genderFemale").classList.toggle("active", gender === "Female");
+      document.getElementById("genderOther").classList.toggle("active", gender === "Other");
+    }
+
+    function toggleRegisterSubject(el) {
+      const subject = el.textContent.trim();
+      el.classList.toggle("active");
+
+      if (el.classList.contains("active")) {
+        if (!selectedSubjects.includes(subject)) selectedSubjects.push(subject);
+      } else {
+        selectedSubjects = selectedSubjects.filter(s => s !== subject);
+      }
+    }
+
+    function updateRegisterStepUI() {
+      document.querySelectorAll(".reg-step").forEach((step, index) => {
+        step.classList.toggle("active", index + 1 === registerStep);
+      });
+
+      const labels = {
+        1: "Step 1 of 3 — Personal Info",
+        2: "Step 2 of 3 — Academic Details",
+        3: "Step 3 of 3 — Account Security"
+      };
+
+      document.getElementById("stepHeadingText").textContent = labels[registerStep];
+
+      const circle1 = document.getElementById("circle1");
+      const circle2 = document.getElementById("circle2");
+      const circle3 = document.getElementById("circle3");
+      const line1 = document.getElementById("line1");
+      const line2 = document.getElementById("line2");
+
+      [circle1, circle2, circle3].forEach(c => c.classList.remove("active", "done"));
+      [line1, line2].forEach(l => l.classList.remove("done"));
+
+      circle1.textContent = "1";
+      circle2.textContent = "2";
+      circle3.textContent = "3";
+
+      if (registerStep === 1) {
+        circle1.classList.add("active");
+      }
+
+      if (registerStep === 2) {
+        circle1.classList.add("done");
+        line1.classList.add("done");
+        circle1.textContent = "✓";
+        circle2.classList.add("active");
+      }
+
+      if (registerStep === 3) {
+        circle1.classList.add("done");
+        circle2.classList.add("done");
+        line1.classList.add("done");
+        line2.classList.add("done");
+        circle1.textContent = "✓";
+        circle2.textContent = "✓";
+        circle3.classList.add("active");
+      }
+
+      document.getElementById("regBackBtn").style.visibility = registerStep === 1 ? "hidden" : "visible";
+      document.getElementById("regNextBtn").textContent = registerStep === 3 ? "Create Account 🎉" : "Continue →";
+    }
+
+    function validateStep1() {
+      const firstName = document.getElementById("regFirstName").value.trim();
+      const lastName = document.getElementById("regLastName").value.trim();
+      const dob = document.getElementById("regDob").value.trim();
+
+      if (!firstName || !lastName || !dob) {
+        showMessage("registerMsg", "Please fill first name, last name, and date of birth.", "error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function validateStep2() {
+      const college = document.getElementById("regCollege").value.trim();
+      const branch = document.getElementById("regBranch").value.trim();
+      const year = document.getElementById("regYear").value.trim();
+      const roll = document.getElementById("regRoll").value.trim();
+      const isStudent = selectedRegisterRole === "ROLE_STUDENT";
+
+      if (!college || !branch || !roll) {
+        showMessage("registerMsg", "Please fill institution, department, and student/employee ID.", "error");
+        return false;
+      }
+
+      if (isStudent && !year) {
+        showMessage("registerMsg", "Please select year / semester.", "error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function validatePasswordRules(password) {
+      const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+      return strongRegex.test(password);
+    }
+
+    function validateStep3() {
+      const email = document.getElementById("regEmail").value.trim();
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const confirmPassword = document.getElementById("regConfirmPassword").value;
+      const terms = document.getElementById("regTerms").checked;
+
+      if (!email || !username || !password || !confirmPassword) {
+        showMessage("registerMsg", "Please fill email, username, password, and confirm password.", "error");
+        return false;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage("registerMsg", "Password and confirm password do not match.", "error");
+        return false;
+      }
+
+      if (!validatePasswordRules(password)) {
+        showMessage("registerMsg", "Password must be at least 8 characters and include uppercase, number, and special character.", "error");
+        return false;
+      }
+
+      if (!terms) {
+        showMessage("registerMsg", "Please accept Terms of Service and Privacy Policy.", "error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function goNextRegisterStep() {
+      clearMessage("registerMsg");
+
+      if (registerStep === 1 && !validateStep1()) return;
+      if (registerStep === 2 && !validateStep2()) return;
+
+      if (registerStep < 3) {
+        registerStep++;
+        updateRegisterStepUI();
+        return;
+      }
+
+      if (!validateStep3()) return;
+      registerUser();
+    }
+
+    function goPrevRegisterStep() {
+      clearMessage("registerMsg");
+
+      if (registerStep > 1) {
+        registerStep--;
+        updateRegisterStepUI();
+      }
+    }
+
+    function clearRegistrationForm() {
+      document.getElementById("regFirstName").value = "";
+      document.getElementById("regLastName").value = "";
+      document.getElementById("regDob").value = "";
+      document.getElementById("regCountryCode").value = "+91";
+      document.getElementById("regPhone").value = "";
+      document.getElementById("regCollege").value = "";
+      document.getElementById("regBranch").value = "";
+      document.getElementById("regYear").value = "";
+      document.getElementById("regRoll").value = "";
+      document.getElementById("regEmail").value = "";
+      document.getElementById("regUsername").value = "";
+      document.getElementById("regPassword").value = "";
+      document.getElementById("regConfirmPassword").value = "";
+      document.getElementById("regTerms").checked = false;
+
+      selectedGender = "";
+      selectedSubjects = [];
+      setGender("");
+      document.querySelectorAll(".subject-chip").forEach(chip => chip.classList.remove("active"));
+
+      selectedRegisterRole = "ROLE_STUDENT";
+      setRegisterRole("ROLE_STUDENT");
+
+      registerStep = 1;
+      updateRegisterStepUI();
+      clearMessage("registerMsg");
+    }
+
+    async function registerUser() {
+      const firstName = document.getElementById("regFirstName").value.trim();
+      const lastName = document.getElementById("regLastName").value.trim();
+      const dob = document.getElementById("regDob").value.trim();
+      const countryCode = document.getElementById("regCountryCode").value.trim();
+      const phone = document.getElementById("regPhone").value.trim();
+
+      const college = document.getElementById("regCollege").value.trim();
+      const branch = document.getElementById("regBranch").value.trim();
+      const year = document.getElementById("regYear").value.trim();
+      const roll = document.getElementById("regRoll").value.trim();
+
+      const email = document.getElementById("regEmail").value.trim();
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value.trim();
+
+      try {
+        const res = await fetch(API_BASE_URL + "/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+            role: selectedRegisterRole
+          })
+        });
+
+        const text = await res.text();
+
+        if (!res.ok) {
+          showMessage("registerMsg", text || "Registration failed.", "error");
+          return;
+        }
+
+        const fullName = (firstName + " " + lastName).trim();
+
+        const profileData = {
+          fullName: fullName,
+          email: email,
+          college: college,
+          branch: branch,
+          roll: roll,
+          phone: (countryCode + " " + phone).trim(),
+          photo: "",
+          dob: dob,
+          gender: selectedGender,
+          year: selectedRegisterRole === "ROLE_STUDENT" ? year : "",
+          subjects: selectedRegisterRole === "ROLE_STUDENT" ? selectedSubjects : [],
+          role: selectedRegisterRole
+        };
+
+        localStorage.setItem("exam_profile_" + username, JSON.stringify(profileData));
+        saveRegisteredUser({ username, role: selectedRegisterRole, profile: profileData, blocked: false });
+
+        showMessage("registerMsg", "Registration successful. Now login.", "success");
+
+        document.getElementById("loginUsername").value = username;
+        document.getElementById("loginPassword").value = "";
+
+        setTimeout(() => {
+          clearRegistrationForm();
+          showLogin();
+        }, 900);
+      } catch (err) {
+        showMessage("registerMsg", "Backend not running or CORS error.", "error");
+        console.error(err);
+      }
+    }
+
+    async function loginUser() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!username || !password) {
+        showMessage("loginMsg", "Username and password are required.", "error");
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE_URL + "/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+
+        const text = await res.text();
+
+        if (!res.ok) {
+          showMessage("loginMsg", text || "Invalid username or password.", "error");
+          return;
+        }
+
+        token = text;
+        currentUsername = username;
+        currentRole = decodeJwtRole(token);
+
+        localStorage.setItem("exam_token", token);
+        localStorage.setItem("exam_username", currentUsername);
+        localStorage.setItem("exam_role", currentRole);
+
+        if (isStudentBlocked(currentUsername)) {
+          showMessage("loginMsg", "Your account is blocked by admin. Please contact your faculty.", "error");
+          localStorage.removeItem("exam_token");
+          localStorage.removeItem("exam_username");
+          localStorage.removeItem("exam_role");
+          token = ""; currentUsername = ""; currentRole = "";
+          return;
+        }
+
+        openApp();
+      } catch (err) {
+        showMessage("loginMsg", "Backend not running or CORS error.", "error");
+        console.error(err);
+      }
+    }
+
+    function openApp() {
+      document.getElementById("authSection").classList.add("hidden");
+      document.getElementById("appSection").classList.remove("hidden");
+
+      document.getElementById("currentUserText").textContent = currentUsername;
+      document.getElementById("currentRoleText").textContent = currentRole.replace("ROLE_", "");
+      document.getElementById("dashRole").textContent = currentRole.replace("ROLE_", "") || "-";
+
+      const adminTab = document.getElementById("adminTab");
+      const studentTab = document.getElementById("studentTab");
+      const studentsAdminTab = document.getElementById("studentsAdminTab");
+
+      if (currentRole === "ROLE_ADMIN") {
+        adminTab.classList.remove("hidden");
+        studentsAdminTab.classList.remove("hidden");
+        studentTab.classList.add("hidden");
+      } else if (currentRole === "ROLE_STUDENT") {
+        studentTab.classList.remove("hidden");
+        adminTab.classList.add("hidden");
+        studentsAdminTab.classList.add("hidden");
+      } else {
+        adminTab.classList.add("hidden");
+        studentsAdminTab.classList.add("hidden");
+        studentTab.classList.add("hidden");
+      }
+
+      updateProfileUI();
+      seedPlatformExams();
+      renderUpcomingExams();
+      renderStudentTests();
+      renderAdminExamList();
+      renderAdminStudents();
+      showPage("dashboardPage", document.getElementById("dashboardTab"), "Dashboard");
+    }
+
+    function logoutUser() {
+      token = "";
+      currentUsername = "";
+      currentRole = "";
+      loadedQuestions = [];
+
+      localStorage.removeItem("exam_token");
+      localStorage.removeItem("exam_username");
+      localStorage.removeItem("exam_role");
+
+      closeProfileDrawer();
+
+      document.getElementById("appSection").classList.add("hidden");
+      document.getElementById("authSection").classList.remove("hidden");
+
+      document.getElementById("loginUsername").value = "";
+      document.getElementById("loginPassword").value = "";
+      showLogin();
+    }
+
+    function addDaysToDate(days) {
+      const date = new Date();
+      date.setDate(date.getDate() + days);
+      return date;
+    }
+
+    function toExamDateInput(date) {
+      return date.toISOString().split("T")[0];
+    }
+
+    function seedUpcomingExams() {
+      if (upcomingExams && upcomingExams.length > 0) return;
+
+      upcomingExams = [
+        {
+          id: 1,
+          title: "Java Fundamentals Test",
+          subject: "Computer Science",
+          date: toExamDateInput(addDaysToDate(2)),
+          time: "10:00 AM",
+          duration: "15 min",
+          totalMarks: "20 Marks",
+          status: "Scheduled"
+        },
+        {
+          id: 2,
+          title: "DBMS Practice Exam",
+          subject: "Database Management",
+          date: toExamDateInput(addDaysToDate(5)),
+          time: "02:00 PM",
+          duration: "15 min",
+          totalMarks: "20 Marks",
+          status: "Scheduled"
+        },
+        {
+          id: 3,
+          title: "Web Technology Quiz",
+          subject: "HTML, CSS, JavaScript",
+          date: toExamDateInput(addDaysToDate(8)),
+          time: "11:30 AM",
+          duration: "15 min",
+          totalMarks: "20 Marks",
+          status: "Scheduled"
+        }
+      ];
+
+      localStorage.setItem("exam_upcoming_exams", JSON.stringify(upcomingExams));
+    }
+
+    function formatUpcomingDate(dateText) {
+      const date = new Date(dateText + "T00:00:00");
+      return {
+        day: date.toLocaleDateString("en-IN", { day: "2-digit" }),
+        month: date.toLocaleDateString("en-IN", { month: "short" }),
+        full: date.toLocaleDateString("en-IN", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        })
+      };
+    }
+
+    function renderUpcomingExams() {
+      seedPlatformExams();
+      upcomingExams = getPlatformExams();
+
+      const box = document.getElementById("upcomingExamBox");
+      const countBox = document.getElementById("dashUpcomingCount");
+
+      if (!box) return;
+
+      const sortedExams = [...upcomingExams].sort((a, b) => {
+        return new Date(a.date + " " + a.time) - new Date(b.date + " " + b.time);
+      });
+
+      if (countBox) countBox.textContent = sortedExams.filter(exam => getExamStatus(exam) === "Upcoming").length;
+
+      if (sortedExams.length === 0) {
+        box.innerHTML = "<p class='muted'>No upcoming exams scheduled.</p>";
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="upcoming-exam-list">
+          ${sortedExams.map(exam => {
+            const examDate = formatUpcomingDate(exam.date);
+            return `
+              <div class="upcoming-exam-item">
+                <div class="exam-date-badge">
+                  <div>
+                    <span>${examDate.month}</span>
+                    <strong>${examDate.day}</strong>
+                  </div>
+                </div>
+
+                <div class="upcoming-exam-info">
+                  <h3>${escapeHtml(exam.title)}</h3>
+                  <p class="muted">${escapeHtml(exam.subject)} • ${examDate.full}</p>
+                  <div class="exam-meta-row">
+                    <span class="exam-meta-chip">⏰ ${escapeHtml(exam.time)}</span>
+                    <span class="exam-meta-chip">⏳ ${escapeHtml(exam.duration)}</span>
+                    <span class="exam-meta-chip">🏁 ${escapeHtml(exam.totalMarks)}</span>
+                  </div>
+                </div>
+
+                <div class="exam-status-pill">${escapeHtml(getExamStatus(exam))}</div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function showPage(pageId, btn, title = "Dashboard") {
+      document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
+
+      document.querySelectorAll(".sidebar-link, .topbar-nav-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      const pageTitle = document.getElementById("pageTitle");
+      if (pageTitle) pageTitle.textContent = title;
+    }
+
+    function getCorrectAnswerText() {
+      const selected = document.getElementById("correctOption").value;
+
+      if (selected === "A") return document.getElementById("optionA").value.trim();
+      if (selected === "B") return document.getElementById("optionB").value.trim();
+      if (selected === "C") return document.getElementById("optionC").value.trim();
+      if (selected === "D") return document.getElementById("optionD").value.trim();
+
+      return "";
+    }
+
+    function getRegisteredUsers() {
+      try { return JSON.parse(localStorage.getItem("exam_registered_users") || "[]"); }
+      catch { return []; }
+    }
+
+    function saveRegisteredUsers(users) {
+      localStorage.setItem("exam_registered_users", JSON.stringify(users));
+    }
+
+    function saveRegisteredUser(user) {
+      const users = getRegisteredUsers();
+      const index = users.findIndex(u => u.username === user.username);
+      const existing = index >= 0 ? users[index] : {};
+      const merged = { ...existing, ...user, blocked: existing.blocked || user.blocked || false };
+
+      if (index >= 0) users[index] = merged;
+      else users.push(merged);
+
+      saveRegisteredUsers(users);
+    }
+
+    function isStudentBlocked(username) {
+      const user = getRegisteredUsers().find(u => u.username === username);
+      return !!(user && user.role === "ROLE_STUDENT" && user.blocked);
+    }
+
+    function getStudentUsers() {
+      const users = getRegisteredUsers().filter(u => u.role === "ROLE_STUDENT");
+
+      const profileKeys = Object.keys(localStorage).filter(key => key.startsWith("exam_profile_"));
+      profileKeys.forEach(key => {
+        try {
+          const username = key.replace("exam_profile_", "");
+          const profile = JSON.parse(localStorage.getItem(key) || "{}");
+          if (profile.role === "ROLE_STUDENT" && !users.some(u => u.username === username)) {
+            users.push({ username, role: "ROLE_STUDENT", profile, blocked: false });
+          }
+        } catch {}
+      });
+
+      return users;
+    }
+
+    function renderAdminStudents() {
+      const box = document.getElementById("adminStudentsBox");
+      if (!box) return;
+
+      if (currentRole !== "ROLE_ADMIN") {
+        box.innerHTML = "<p class='muted'>Only admin can view students.</p>";
+        return;
+      }
+
+      const students = getStudentUsers();
+      if (students.length === 0) {
+        box.innerHTML = "<p class='muted'>No registered students found yet.</p>";
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>College</th>
+                <th>Branch</th>
+                <th>Roll No.</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${students.map(student => {
+                const profile = student.profile || JSON.parse(localStorage.getItem("exam_profile_" + student.username) || "{}");
+                return `
+                  <tr>
+                    <td><b>${escapeHtml(profile.fullName || student.username)}</b><div class="small">@${escapeHtml(student.username)}</div></td>
+                    <td>${escapeHtml(profile.college || "-")}</td>
+                    <td>${escapeHtml(profile.branch || "-")}</td>
+                    <td>${escapeHtml(profile.roll || "-")}</td>
+                    <td><span class="status-chip ${student.blocked ? "blocked" : "running"}">${student.blocked ? "Blocked" : "Active"}</span></td>
+                    <td>
+                      <button class="${student.blocked ? "btn-primary" : "btn-danger"}" onclick="toggleStudentBlock('${escapeAttr(student.username)}')">
+                        ${student.blocked ? "Unblock" : "Block"}
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function toggleStudentBlock(username) {
+      if (currentRole !== "ROLE_ADMIN") return;
+
+      const users = getRegisteredUsers();
+      let user = users.find(u => u.username === username);
+      if (!user) {
+        const profile = JSON.parse(localStorage.getItem("exam_profile_" + username) || "{}");
+        user = { username, role: "ROLE_STUDENT", profile, blocked: false };
+        users.push(user);
+      }
+
+      user.blocked = !user.blocked;
+      saveRegisteredUsers(users);
+      renderAdminStudents();
+      renderStudentSelectOptions();
+    }
+
+    function getPlatformExams() {
+      try { return JSON.parse(localStorage.getItem("exam_platform_exams") || "[]"); }
+      catch { return []; }
+    }
+
+    function savePlatformExams(exams) {
+      platformExams = exams;
+      localStorage.setItem("exam_platform_exams", JSON.stringify(platformExams));
+      upcomingExams = platformExams;
+      localStorage.setItem("exam_upcoming_exams", JSON.stringify(upcomingExams));
+    }
+
+    function seedPlatformExams() {
+      const existing = getPlatformExams();
+      if (existing.length > 0) {
+        platformExams = existing;
+        upcomingExams = existing;
+        return;
+      }
+
+      platformExams = [
+        {
+          id: Date.now() + 1,
+          title: "Java Fundamentals Test",
+          subject: "Computer Science",
+          date: toExamDateInput(addDaysToDate(0)),
+          time: "23:59",
+          duration: 15,
+          totalMarks: "20",
+          assignType: "all",
+          assignedStudent: "",
+          createdBy: "System",
+          questions: [
+            { id: 1, question: "Which keyword is used to create a class in Java?", optionA: "class", optionB: "object", optionC: "new", optionD: "method", correctAnswer: "class" },
+            { id: 2, question: "Which method is the entry point of a Java program?", optionA: "start()", optionB: "main()", optionC: "run()", optionD: "init()", correctAnswer: "main()" }
+          ]
+        },
+        {
+          id: Date.now() + 2,
+          title: "DBMS Practice Exam",
+          subject: "Database Management",
+          date: toExamDateInput(addDaysToDate(3)),
+          time: "10:00",
+          duration: 15,
+          totalMarks: "20",
+          assignType: "all",
+          assignedStudent: "",
+          createdBy: "System",
+          questions: [
+            { id: 1, question: "SQL stands for?", optionA: "Structured Query Language", optionB: "Simple Query Language", optionC: "System Query Logic", optionD: "Server Query List", correctAnswer: "Structured Query Language" }
+          ]
+        }
+      ];
+
+      savePlatformExams(platformExams);
+    }
+
+    function getExamDateTime(exam) {
+      return new Date(`${exam.date}T${exam.time || "00:00"}`);
+    }
+
+    function getExamStatus(exam) {
+      const now = new Date();
+      const start = getExamDateTime(exam);
+      const end = new Date(start.getTime() + Number(exam.duration || 15) * 60000);
+
+      if (now >= start && now <= end) return "Running";
+      if (now < start) return "Upcoming";
+      return "Closed";
+    }
+
+    function isExamAssignedToCurrentStudent(exam) {
+      if (exam.assignType === "all") return true;
+      return exam.assignedStudent === currentUsername;
+    }
+
+    function toggleSpecificStudentBox() {
+      const assignType = document.getElementById("examAssignType").value;
+      document.getElementById("specificStudentBox").classList.toggle("hidden", assignType !== "specific");
+      renderStudentSelectOptions();
+    }
+
+    function renderStudentSelectOptions() {
+      const select = document.getElementById("examSpecificStudent");
+      if (!select) return;
+
+      const students = getStudentUsers().filter(s => !s.blocked);
+      select.innerHTML = `<option value="">Select student</option>` + students.map(student => {
+        const profile = student.profile || {};
+        const label = `${profile.fullName || student.username} (@${student.username})`;
+        return `<option value="${escapeAttr(student.username)}">${escapeHtml(label)}</option>`;
+      }).join("");
+    }
+
+    function addQuestionToExamDraft() {
+      const question = document.getElementById("qText").value.trim();
+      const optionA = document.getElementById("optionA").value.trim();
+      const optionB = document.getElementById("optionB").value.trim();
+      const optionC = document.getElementById("optionC").value.trim();
+      const optionD = document.getElementById("optionD").value.trim();
+      const correctAnswer = getCorrectAnswerText();
+
+      if (!question || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+        showMessage("adminMsg", "Fill question, all options, and correct answer before adding.", "error");
+        return;
+      }
+
+      examQuestionDraft.push({
+        id: Date.now() + examQuestionDraft.length,
+        question,
+        optionA,
+        optionB,
+        optionC,
+        optionD,
+        correctAnswer
+      });
+
+      document.getElementById("qText").value = "";
+      document.getElementById("optionA").value = "";
+      document.getElementById("optionB").value = "";
+      document.getElementById("optionC").value = "";
+      document.getElementById("optionD").value = "";
+      document.getElementById("correctOption").value = "A";
+      clearMessage("adminMsg");
+      renderDraftQuestions();
+    }
+
+    function renderDraftQuestions() {
+      const box = document.getElementById("draftQuestionBox");
+      if (!box) return;
+
+      if (examQuestionDraft.length === 0) {
+        box.innerHTML = "<p class='muted'>No questions added to this exam yet.</p>";
+        return;
+      }
+
+      box.innerHTML = examQuestionDraft.map((q, index) => `
+        <div class="draft-question-card">
+          <div class="section-head" style="margin-bottom:8px;">
+            <h4>Q${index + 1}. ${escapeHtml(q.question)}</h4>
+            <button class="btn-danger" onclick="removeDraftQuestion(${index})">Remove</button>
+          </div>
+          <p class="small">A. ${escapeHtml(q.optionA)} | B. ${escapeHtml(q.optionB)} | C. ${escapeHtml(q.optionC)} | D. ${escapeHtml(q.optionD)}</p>
+          <p class="small"><b>Correct:</b> ${escapeHtml(q.correctAnswer)}</p>
+        </div>
+      `).join("");
+    }
+
+    function removeDraftQuestion(index) {
+      examQuestionDraft.splice(index, 1);
+      renderDraftQuestions();
+    }
+
+    function clearExamForm() {
+      ["examTitle", "examSubject", "examDate", "examTime", "examMarks", "qText", "optionA", "optionB", "optionC", "optionD"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      document.getElementById("examDuration").value = "15";
+      document.getElementById("examAssignType").value = "all";
+      examQuestionDraft = [];
+      toggleSpecificStudentBox();
+      renderDraftQuestions();
+      clearMessage("adminMsg");
+    }
+
+    function saveExam() {
+      if (currentRole !== "ROLE_ADMIN") {
+        showMessage("adminMsg", "Only admin can create exams.", "error");
+        return;
+      }
+
+      const title = document.getElementById("examTitle").value.trim();
+      const subject = document.getElementById("examSubject").value.trim();
+      const date = document.getElementById("examDate").value;
+      const time = document.getElementById("examTime").value;
+      const duration = Number(document.getElementById("examDuration").value || 15);
+      const totalMarks = document.getElementById("examMarks").value.trim() || String(examQuestionDraft.length);
+      const assignType = document.getElementById("examAssignType").value;
+      const assignedStudent = document.getElementById("examSpecificStudent").value;
+
+      if (!title || !subject || !date || !time) {
+        showMessage("adminMsg", "Please fill exam title, subject, date, and time.", "error");
+        return;
+      }
+
+      if (assignType === "specific" && !assignedStudent) {
+        showMessage("adminMsg", "Please select a specific student.", "error");
+        return;
+      }
+
+      if (examQuestionDraft.length === 0) {
+        showMessage("adminMsg", "Please add at least one question for this exam.", "error");
+        return;
+      }
+
+      const exams = getPlatformExams();
+      exams.push({
+        id: Date.now(),
+        title,
+        subject,
+        date,
+        time,
+        duration,
+        totalMarks,
+        assignType,
+        assignedStudent,
+        createdBy: currentUsername,
+        questions: examQuestionDraft.map((q, index) => ({ ...q, id: index + 1 }))
+      });
+
+      savePlatformExams(exams);
+      showMessage("adminMsg", "Exam created successfully.", "success");
+      clearExamForm();
+      renderAdminExamList();
+      renderUpcomingExams();
+    }
+
+    function deleteExam(examId) {
+      if (!confirm("Delete this exam?")) return;
+      const exams = getPlatformExams().filter(exam => String(exam.id) !== String(examId));
+      savePlatformExams(exams);
+      renderAdminExamList();
+      renderUpcomingExams();
+      renderStudentTests();
+    }
+
+    function renderAdminExamList() {
+      const box = document.getElementById("adminExamList");
+      if (!box) return;
+
+      const exams = getPlatformExams().sort((a, b) => getExamDateTime(a) - getExamDateTime(b));
+
+      document.getElementById("dashQuestionCount").textContent = exams.reduce((sum, exam) => sum + (exam.questions?.length || 0), 0);
+
+      if (exams.length === 0) {
+        box.innerHTML = "<p class='muted'>No exams created yet.</p>";
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>Schedule</th>
+                <th>Assigned To</th>
+                <th>Questions</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${exams.map(exam => {
+                const status = getExamStatus(exam);
+                return `
+                  <tr>
+                    <td><b>${escapeHtml(exam.title)}</b><div class="small">Created by ${escapeHtml(exam.createdBy || "Admin")}</div></td>
+                    <td>${escapeHtml(exam.subject)}</td>
+                    <td>${escapeHtml(formatUpcomingDate(exam.date).full)}<div class="small">${escapeHtml(exam.time)} • ${exam.duration} min</div></td>
+                    <td>${exam.assignType === "all" ? "All Students" : "@" + escapeHtml(exam.assignedStudent)}</td>
+                    <td>${exam.questions?.length || 0}</td>
+                    <td><span class="status-chip ${status.toLowerCase()}">${status}</span></td>
+                    <td><button class="btn-danger" onclick="deleteExam('${escapeAttr(exam.id)}')">Delete</button></td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function getStudentVisibleExams() {
+      seedPlatformExams();
+      return getPlatformExams()
+        .filter(exam => isExamAssignedToCurrentStudent(exam))
+        .filter(exam => ["Running", "Upcoming"].includes(getExamStatus(exam)))
+        .sort((a, b) => getExamDateTime(a) - getExamDateTime(b));
+    }
+
+    function renderStudentTests() {
+      const box = document.getElementById("studentTestList");
+      if (!box) return;
+
+      const exams = currentRole === "ROLE_STUDENT" ? getStudentVisibleExams() : getPlatformExams();
+
+      if (exams.length === 0) {
+        box.innerHTML = "<p class='muted'>No running or upcoming tests assigned to you.</p>";
+        return;
+      }
+
+      box.innerHTML = exams.map(exam => {
+        const status = getExamStatus(exam);
+        const isRunning = status === "Running";
+        return `
+          <div class="test-action-card">
+            <div>
+              <h3>${escapeHtml(exam.title)}</h3>
+              <p class="muted"><b>Subject:</b> ${escapeHtml(exam.subject)} • ${escapeHtml(formatUpcomingDate(exam.date).full)} • ${escapeHtml(exam.time)}</p>
+              <div class="exam-meta-row">
+                <span class="exam-meta-chip">⏳ ${exam.duration} min</span>
+                <span class="exam-meta-chip">📝 ${exam.questions?.length || 0} Questions</span>
+                <span class="exam-meta-chip">🏁 ${escapeHtml(exam.totalMarks || "-")} Marks</span>
+                <span class="status-chip ${status.toLowerCase()}">${status}</span>
+              </div>
+            </div>
+            <div class="admin-mini-actions">
+              <button class="${isRunning ? "btn-primary" : "btn-secondary"}" ${isRunning ? "" : "disabled"} onclick="startAssignedExam('${escapeAttr(exam.id)}')">
+                ${isRunning ? "Start Test" : "Upcoming"}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function startAssignedExam(examId) {
+      clearMessage("testMsg");
+      const exam = getPlatformExams().find(item => String(item.id) === String(examId));
+
+      if (!exam) {
+        showMessage("testMsg", "Exam not found.", "error");
+        return;
+      }
+
+      if (getExamStatus(exam) !== "Running") {
+        showMessage("testMsg", "This test is not running yet.", "info");
+        return;
+      }
+
+      if (isStudentBlocked(currentUsername)) {
+        showMessage("testMsg", "Your account is blocked. You cannot take tests.", "error");
+        return;
+      }
+
+      currentExamForTest = exam;
+      loadedQuestions = exam.questions || [];
+      examDurationSeconds = Number(exam.duration || 15) * 60;
+
+      if (loadedQuestions.length === 0) {
+        showMessage("testMsg", "This exam has no questions.", "info");
+        return;
+      }
+
+      openInstructionPopup();
+    }
+
+    async function fetchQuestions() {
+      if (currentExamForTest) return currentExamForTest.questions || [];
+      return getPlatformExams().flatMap(exam => exam.questions || []);
+    }
+
+    async function loadQuestionsForPreview() {
+      renderAdminExamList();
+    }
+
+    async function loadQuestionsForTest() {
+      renderStudentTests();
+      showMessage("testMsg", "Choose a running test and click Start Test.", "info");
+    }
+
+    function openInstructionPopup() {
+      document.getElementById("acceptInstructions").checked = false;
+      document.getElementById("startTestBtn").disabled = true;
+      document.getElementById("instructionOverlay").classList.add("open");
+    }
+
+    function closeInstructionPopup() {
+      document.getElementById("instructionOverlay").classList.remove("open");
+    }
+
+    function toggleStartTestButton() {
+      document.getElementById("startTestBtn").disabled =
+        !document.getElementById("acceptInstructions").checked;
+    }
+
+    function startTestAfterInstructions() {
+      if (!document.getElementById("acceptInstructions").checked) return;
+      closeInstructionPopup();
+      openExamWindow();
+    }
+
+    function openExamWindow() {
+      examStarted = true;
+      examSubmitting = false;
+      examRemainingSeconds = examDurationSeconds;
+      examViolationCount = 0;
+      lastViolationTime = 0;
+
+      const titleEl = document.querySelector(".exam-window-title h2");
+      const subtitleEl = document.querySelector(".exam-window-title p");
+      if (titleEl) titleEl.textContent = currentExamForTest ? currentExamForTest.title : "Online Test";
+      if (subtitleEl) subtitleEl.textContent = currentExamForTest ? `${currentExamForTest.subject} • Exam mode active.` : "Exam mode active. Do not refresh, switch tabs, or exit fullscreen.";
+
+      renderExamWindowQuestions();
+
+      const warning = document.getElementById("examSecurityWarning");
+      warning.classList.remove("danger");
+      warning.textContent = `Test started. You have ${Math.round(examDurationSeconds / 60)} minutes. Warning count: 0/3.`;
+
+      document.getElementById("examWindow").classList.add("open");
+      document.body.style.overflow = "hidden";
+
+      startExamTimer();
+      requestExamFullscreen();
+    }
+
+    function renderExamWindowQuestions() {
+      const box = document.getElementById("examWindowQuestions");
+
+      box.innerHTML = loadedQuestions.map((q, index) => `
+        <div class="exam-question-full">
+          <h3>Q${index + 1}. ${escapeHtml(q.question)}</h3>
+
+          <label class="option">
+            <input type="radio" name="exam_q_${q.id}" value="${escapeAttr(q.optionA)}">
+            ${escapeHtml(q.optionA)}
+          </label>
+
+          <label class="option">
+            <input type="radio" name="exam_q_${q.id}" value="${escapeAttr(q.optionB)}">
+            ${escapeHtml(q.optionB)}
+          </label>
+
+          <label class="option">
+            <input type="radio" name="exam_q_${q.id}" value="${escapeAttr(q.optionC)}">
+            ${escapeHtml(q.optionC)}
+          </label>
+
+          <label class="option">
+            <input type="radio" name="exam_q_${q.id}" value="${escapeAttr(q.optionD)}">
+            ${escapeHtml(q.optionD)}
+          </label>
+        </div>
+      `).join("");
+    }
+
+    function startExamTimer() {
+      clearInterval(examTimerInterval);
+      updateExamTimerUI();
+
+      examTimerInterval = setInterval(() => {
+        examRemainingSeconds--;
+        updateExamTimerUI();
+
+        if (examRemainingSeconds <= 0) {
+          clearInterval(examTimerInterval);
+          submitExamWindow(true, "Time is over. Test submitted automatically.");
+        }
+      }, 1000);
+    }
+
+    function updateExamTimerUI() {
+      const minutes = Math.floor(examRemainingSeconds / 60);
+      const seconds = examRemainingSeconds % 60;
+
+      const timerBox = document.getElementById("examTimerBox");
+      const progressFill = document.getElementById("examProgressFill");
+
+      timerBox.textContent =
+        String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+      const percent = (examRemainingSeconds / examDurationSeconds) * 100;
+      progressFill.style.width = percent + "%";
+
+      timerBox.classList.remove("warning", "danger");
+
+      if (examRemainingSeconds <= 300 && examRemainingSeconds > 60) {
+        timerBox.classList.add("warning");
+      }
+
+      if (examRemainingSeconds <= 60) {
+        timerBox.classList.add("danger");
+      }
+    }
+
+    function requestExamFullscreen() {
+      const examWindow = document.getElementById("examWindow");
+
+      if (examWindow.requestFullscreen) {
+        examWindow.requestFullscreen().catch(() => {
+          recordExamViolation("Fullscreen permission denied.");
+        });
+      }
+    }
+
+    function recordExamViolation(reason) {
+      if (!examStarted || examSubmitting) return;
+
+      const now = Date.now();
+
+      if (now - lastViolationTime < 1200) return;
+      lastViolationTime = now;
+
+      examViolationCount++;
+
+      const warning = document.getElementById("examSecurityWarning");
+      warning.classList.add("danger");
+      warning.textContent = `${reason} Warning count: ${examViolationCount}/3.`;
+
+      if (examViolationCount >= 3) {
+        submitExamWindow(true, "You switched window/tab 3 times. Test submitted automatically.");
+      }
+    }
+
+    document.addEventListener("fullscreenchange", () => {
+      if (examStarted && !document.fullscreenElement) {
+        recordExamViolation("You exited fullscreen during the test.");
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (examStarted && document.hidden) {
+        recordExamViolation("You switched tab or minimized the browser.");
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      if (examStarted) {
+        recordExamViolation("Exam window lost focus.");
+      }
+    });
+
+    function collectExamWindowAnswers() {
+      return loadedQuestions.map(q => {
+        const checked = document.querySelector(`input[name="exam_q_${q.id}"]:checked`);
+
+        return {
+          questionId: q.id,
+          selectedAnswer: checked ? checked.value : "",
+          correctAnswer: q.correctAnswer || ""
+        };
+      });
+    }
+
+    async function submitExamWindow(autoSubmit = false, autoReason = "") {
+      if (!examStarted || examSubmitting) return;
+
+      const answers = collectExamWindowAnswers();
+      const unanswered = answers.filter(a => !a.selectedAnswer).length;
+
+      if (!autoSubmit && unanswered > 0) {
+        const ok = confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`);
+        if (!ok) return;
+      }
+
+      examSubmitting = true;
+
+      const correctAnswers = answers.filter(a => a.selectedAnswer && a.selectedAnswer === a.correctAnswer).length;
+      const totalQuestions = loadedQuestions.length;
+      const score = totalQuestions ? Math.round((correctAnswers / totalQuestions) * Number(currentExamForTest?.totalMarks || totalQuestions)) : 0;
+
+      const result = {
+        username: currentUsername,
+        examId: currentExamForTest?.id || "local",
+        examTitle: currentExamForTest?.title || "Online Test",
+        subject: currentExamForTest?.subject || "General",
+        totalQuestions,
+        correctAnswers,
+        score,
+        submittedAt: new Date().toLocaleString()
+      };
+
+      const scoreText = `${result.correctAnswers}/${result.totalQuestions}`;
+      saveLeaderboardResult(result);
+      saveStudentLocalResult(result);
+      document.getElementById("dashLastScore").textContent = scoreText;
+
+      closeExamWindow();
+
+      showPage("resultPage", document.getElementById("resultTab"), "Results");
+      renderSingleResult(result);
+
+      const msg = autoReason
+        ? `${autoReason} Score: ${scoreText}`
+        : `Test submitted successfully. Score: ${scoreText}`;
+
+      showMessage("resultMsg", msg, "success");
+    }
+
+    function saveStudentLocalResult(result) {
+      const key = "exam_results_" + currentUsername;
+      const results = JSON.parse(localStorage.getItem(key) || "[]");
+      results.unshift(result);
+      localStorage.setItem(key, JSON.stringify(results));
+    }
+
+    function quitExamWindow() {
+      const ok = confirm("Are you sure you want to quit the test? Your answers will not be submitted.");
+
+      if (!ok) return;
+
+      closeExamWindow();
+      showMessage("testMsg", "Test quit successfully.", "info");
+    }
+
+    function closeExamWindow() {
+      examStarted = false;
+      examSubmitting = false;
+      clearInterval(examTimerInterval);
+
+      document.getElementById("examWindow").classList.remove("open");
+      document.body.style.overflow = "";
+      currentExamForTest = null;
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+
+      renderStudentTests();
+    }
+
+    async function loadResults() {
+      clearMessage("resultMsg");
+
+      const localResults = JSON.parse(localStorage.getItem("exam_results_" + currentUsername) || "[]");
+      if (localResults.length > 0) {
+        renderResults(localResults);
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE_URL + "/student/result", {
+          method: "GET",
+          headers: authHeaders()
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          showMessage("resultMsg", errText || "Could not load results.", "error");
+          return;
+        }
+
+        const results = await res.json();
+        renderResults(results);
+      } catch (err) {
+        renderResults([]);
+      }
+    }
+
+    function renderSingleResult(result) {
+      renderResults([result]);
+    }
+
+    function renderResults(results) {
+      const box = document.getElementById("resultBox");
+
+      if (!results || results.length === 0) {
+        box.innerHTML = "<p class='muted'>No result found.</p>";
+        return;
+      }
+
+      const latest = results[results.length - 1];
+      document.getElementById("dashLastScore").textContent =
+        `${latest.correctAnswers}/${latest.totalQuestions}`;
+
+      box.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>Username</th>
+                <th>Total</th>
+                <th>Correct</th>
+                <th>Score</th>
+                <th>Submitted At</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results.map(r => `
+                <tr>
+                  <td>${escapeHtml(r.examTitle || "Online Test")}</td>
+                  <td>${escapeHtml(r.subject || "General")}</td>
+                  <td>${escapeHtml(r.username || currentUsername || "")}</td>
+                  <td>${r.totalQuestions}</td>
+                  <td>${r.correctAnswers}</td>
+                  <td>${r.score}</td>
+                  <td>${escapeHtml(r.submittedAt || "")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function saveLeaderboardResult(result) {
+      const profile = loadUserProfile();
+
+      const leaderboard = JSON.parse(localStorage.getItem("exam_leaderboard") || "[]");
+
+      const entry = {
+        username: currentUsername,
+        fullName: profile.fullName || currentUsername,
+        college: profile.college || "-",
+        branch: profile.branch || "-",
+        score: Number(result.score || 0),
+        correctAnswers: Number(result.correctAnswers || 0),
+        totalQuestions: Number(result.totalQuestions || 0),
+        submittedAt: result.submittedAt || new Date().toLocaleString(),
+        examTitle: result.examTitle || "Online Test",
+        subject: result.subject || "General"
+      };
+
+      const existingIndex = leaderboard.findIndex(item => item.username === currentUsername);
+
+      if (existingIndex >= 0) {
+        if (entry.score >= Number(leaderboard[existingIndex].score || 0)) {
+          leaderboard[existingIndex] = entry;
+        }
+      } else {
+        leaderboard.push(entry);
+      }
+
+      localStorage.setItem("exam_leaderboard", JSON.stringify(leaderboard));
+    }
+
+    function renderLeaderboard() {
+      const box = document.getElementById("leaderboardBox");
+
+      let leaderboard = JSON.parse(localStorage.getItem("exam_leaderboard") || "[]");
+
+      leaderboard.sort((a, b) => {
+        if (Number(b.score) !== Number(a.score)) {
+          return Number(b.score) - Number(a.score);
+        }
+        return Number(b.correctAnswers) - Number(a.correctAnswers);
+      });
+
+      if (leaderboard.length === 0) {
+        box.innerHTML = `
+          <p class="muted">
+            No leaderboard data yet. Students will appear here after submitting tests.
+          </p>
+        `;
+        return;
+      }
+
+      box.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Student</th>
+                <th>Exam</th>
+                <th>Subject</th>
+                <th>College</th>
+                <th>Branch</th>
+                <th>Correct</th>
+                <th>Score</th>
+                <th>Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${leaderboard.map((item, index) => `
+                <tr>
+                  <td>
+                    <div class="leaderboard-rank ${index === 0 ? "top" : ""}">
+                      ${index + 1}
+                    </div>
+                  </td>
+                  <td>
+                    <b>${escapeHtml(item.fullName)}</b>
+                    <div class="small">@${escapeHtml(item.username)}</div>
+                  </td>
+                  <td>${escapeHtml(item.examTitle || "Online Test")}</td>
+                  <td>${escapeHtml(item.subject || "General")}</td>
+                  <td>${escapeHtml(item.college)}</td>
+                  <td>${escapeHtml(item.branch)}</td>
+                  <td>${item.correctAnswers}/${item.totalQuestions}</td>
+                  <td><b>${item.score}</b></td>
+                  <td>${escapeHtml(item.submittedAt)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function getProfileKey() {
+      return "exam_profile_" + currentUsername;
+    }
+
+    function getInitials(name) {
+      const cleanName = String(name || currentUsername || "User").trim();
+      if (!cleanName) return "U";
+      const parts = cleanName.split(" ").filter(Boolean);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return cleanName.slice(0, 2).toUpperCase();
+    }
+
+    function getDefaultProfile() {
+      return {
+        fullName: currentUsername || "",
+        college: "",
+        branch: "",
+        roll: "",
+        email: "",
+        phone: "",
+        photo: ""
+      };
+    }
+
+    function loadUserProfile() {
+      const saved = localStorage.getItem(getProfileKey());
+
+      if (!saved) {
+        return getDefaultProfile();
+      }
+
+      try {
+        return {
+          ...getDefaultProfile(),
+          ...JSON.parse(saved)
+        };
+      } catch (error) {
+        return getDefaultProfile();
+      }
+    }
+
+    function saveUserProfile(profile) {
+      localStorage.setItem(getProfileKey(), JSON.stringify(profile));
+    }
+
+    function updateProfileUI() {
+      const profile = loadUserProfile();
+      const displayName = profile.fullName || currentUsername || "User";
+      const displayRole = currentRole.replace("ROLE_", "") || "User";
+
+      document.getElementById("profileDisplayName").textContent = displayName;
+      document.getElementById("profileDisplayRole").textContent = displayRole;
+
+      document.getElementById("profileFullName").value = profile.fullName || "";
+      document.getElementById("profileCollege").value = profile.college || "";
+      document.getElementById("profileBranch").value = profile.branch || "";
+      document.getElementById("profileRoll").value = profile.roll || "";
+      document.getElementById("profileEmail").value = profile.email || "";
+      document.getElementById("profilePhone").value = profile.phone || "";
+
+      const topAvatar = document.getElementById("topProfileAvatar");
+      const drawerAvatar = document.getElementById("drawerProfileAvatar");
+      const sidebarAvatar = document.getElementById("sidebarProfileAvatar");
+      const sidebarUserName = document.getElementById("sidebarUserName");
+      const sidebarUserRole = document.getElementById("sidebarUserRole");
+
+      if (sidebarUserName) sidebarUserName.textContent = displayName;
+      if (sidebarUserRole) sidebarUserRole.textContent = displayRole;
+
+      if (profile.photo) {
+        const img = `<img src="${profile.photo}" alt="Profile">`;
+        if (topAvatar) topAvatar.innerHTML = img;
+        if (drawerAvatar) drawerAvatar.innerHTML = img;
+        if (sidebarAvatar) sidebarAvatar.innerHTML = img;
+      } else {
+        const initials = getInitials(displayName);
+        if (topAvatar) topAvatar.textContent = initials;
+        if (drawerAvatar) drawerAvatar.textContent = initials;
+        if (sidebarAvatar) sidebarAvatar.textContent = initials;
+      }
+    }
+
+    function openProfileDrawer() {
+      updateProfileUI();
+      document.getElementById("profileOverlay").classList.add("open");
+      document.getElementById("profileDrawer").classList.add("open");
+    }
+
+    function closeProfileDrawer() {
+      document.getElementById("profileOverlay").classList.remove("open");
+      document.getElementById("profileDrawer").classList.remove("open");
+    }
+
+    function previewProfilePhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const profile = loadUserProfile();
+        profile.photo = reader.result;
+        saveUserProfile(profile);
+        updateProfileUI();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveProfileDetails() {
+      const profile = loadUserProfile();
+
+      profile.fullName = document.getElementById("profileFullName").value.trim();
+      profile.college = document.getElementById("profileCollege").value.trim();
+      profile.branch = document.getElementById("profileBranch").value.trim();
+      profile.roll = document.getElementById("profileRoll").value.trim();
+      profile.email = document.getElementById("profileEmail").value.trim();
+      profile.phone = document.getElementById("profilePhone").value.trim();
+
+      saveUserProfile(profile);
+      updateProfileUI();
+
+      const msg = document.getElementById("profileSaveMsg");
+      msg.classList.add("show");
+
+      setTimeout(() => {
+        msg.classList.remove("show");
+      }, 1800);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value).replaceAll("\n", " ");
+    }
+
+
+    function applyTheme(theme) {
+      const finalTheme = theme === "dark" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", finalTheme);
+      localStorage.setItem("exam_theme", finalTheme);
+
+      const icon = document.getElementById("themeToggleIcon");
+      const text = document.getElementById("themeToggleText");
+
+      if (icon) icon.textContent = finalTheme === "dark" ? "☀️" : "🌙";
+      if (text) text.textContent = finalTheme === "dark" ? "Light Mode" : "Dark Mode";
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+      applyTheme(currentTheme === "dark" ? "light" : "dark");
+    }
+
+    function loadSavedTheme() {
+      const savedTheme = localStorage.getItem("exam_theme") || "light";
+      applyTheme(savedTheme);
+    }
+
+    window.addEventListener("load", () => {
+      loadSavedTheme();
+      setRegisterRole("ROLE_STUDENT");
+      updateRegisterStepUI();
+      seedPlatformExams();
+      renderDraftQuestions();
+
+      if (token && currentUsername) {
+        openApp();
+      }
+    });
+  </script>
+</body>
+</html>
